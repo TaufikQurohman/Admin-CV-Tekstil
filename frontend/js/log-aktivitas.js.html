@@ -1,0 +1,220 @@
+﻿function backupDatabaseForm(){
+
+  if(!confirmAction("Buat backup database sekarang?")){
+    return;
+  }
+
+  showLoading(
+    "Membuat backup database..."
+  );
+
+  callServer(
+    "backupDatabase",
+    [],
+
+    function(result){
+
+      hideLoading();
+
+      if(!result || result.success === false){
+
+        showToast(
+          result?.message ||
+          "Gagal membuat backup.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      showToast(
+        `Backup berhasil dibuat: ${result.fileName || ""}`
+      );
+
+      if(result.fileUrl){
+        window.open(
+          result.fileUrl,
+          "_blank"
+        );
+      }
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal membuat backup database.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   LOG AKTIVITAS
+========================================================= */
+
+function loadActivityLog(){
+
+  const container =
+    $("activityLogTable");
+
+  if(!container){
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat log aktivitas...
+      </div>
+    </div>
+  `;
+
+  callServer(
+    "getActivityLog",
+    [],
+
+    function(data){
+
+      renderActivityLog(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      container.innerHTML =
+        `<div class="empty-state">
+          <div class="empty-state-title">
+            Gagal mengambil log aktivitas
+          </div>
+        </div>`;
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil log aktivitas.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderActivityLog(
+  data
+){
+
+  const container =
+    $("activityLogTable");
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-clock-history"></i>
+        <div class="empty-state-title">
+          Belum ada aktivitas
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+          <th>Tanggal & Waktu</th>
+          <th>User</th>
+          <th>Aktivitas</th>
+          <th>Modul</th>
+          <th>ID Data</th>
+          <th>Keterangan</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  item.tanggalWaktu || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.user || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.aktivitas || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.modul || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.idData || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.keterangan || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+

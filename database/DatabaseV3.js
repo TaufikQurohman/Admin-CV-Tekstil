@@ -1,4 +1,4 @@
-/************************************************************
+﻿/************************************************************
  * DATABASE V3 FINAL
  * CV PANDS TEKSTIL
  *
@@ -683,7 +683,7 @@ function migratePembukuanSheet_(
       .map(
         function(value) {
 
-          return cleanString_(
+          return dbCleanString_(
             value
           );
 
@@ -864,7 +864,7 @@ function migratePembukuanSheet_(
       ) {
 
         jumlah =
-          toNumber_(
+          dbToNumber_(
             beratKg
           );
 
@@ -892,7 +892,7 @@ function migratePembukuanSheet_(
 
       if (
 
-        cleanString_(
+        dbCleanString_(
           satuan
         ).toLowerCase() === "kg"
 
@@ -903,7 +903,7 @@ function migratePembukuanSheet_(
       ) {
 
         beratKg =
-          toNumber_(
+          dbToNumber_(
             jumlah
           );
 
@@ -917,7 +917,7 @@ function migratePembukuanSheet_(
 
       if (
 
-        cleanString_(
+        dbCleanString_(
           satuan
         ).toLowerCase() === "meter"
 
@@ -965,7 +965,7 @@ function migratePembukuanSheet_(
 
 
       hargaSatuan =
-        toNumber_(
+        dbToNumber_(
           hargaSatuan
         );
 
@@ -1017,11 +1017,11 @@ function migratePembukuanSheet_(
       ) {
 
         totalPenjualan =
-          toNumber_(
+          dbToNumber_(
             jumlah
           )
           *
-          toNumber_(
+          dbToNumber_(
             hargaSatuan
           );
 
@@ -1029,7 +1029,7 @@ function migratePembukuanSheet_(
 
 
       totalPenjualan =
-        toNumber_(
+        dbToNumber_(
           totalPenjualan
         );
 
@@ -1046,7 +1046,7 @@ function migratePembukuanSheet_(
 
         namaPembeli,
 
-        toNumber_(
+        dbToNumber_(
           jumlah
         ),
 
@@ -1056,7 +1056,7 @@ function migratePembukuanSheet_(
           beratKg
         )
           ? ""
-          : toNumber_(
+          : dbToNumber_(
               beratKg
             ),
 
@@ -1252,7 +1252,7 @@ function migrateSuratJalanHeader_(
       .map(
         function(value) {
 
-          return cleanString_(
+          return dbCleanString_(
             value
           );
 
@@ -1452,7 +1452,7 @@ function migrateSuratJalanHeader_(
 
 
       const totalRoll =
-        toNumber_(
+        dbToNumber_(
           getMappedValue_(
             row,
             indexMap,
@@ -1464,7 +1464,7 @@ function migrateSuratJalanHeader_(
 
 
       const totalKg =
-        toNumber_(
+        dbToNumber_(
           getMappedValue_(
             row,
             indexMap,
@@ -1604,7 +1604,7 @@ function migrateDetailSuratJalanSheet_(
       .map(
         function(value) {
 
-          return cleanString_(
+          return dbCleanString_(
             value
           );
 
@@ -1765,7 +1765,7 @@ function migrateDetailSuratJalanSheet_(
 
         idSuratJalan,
 
-        toNumber_(
+        dbToNumber_(
           no
         ),
 
@@ -1775,7 +1775,7 @@ function migrateDetailSuratJalanSheet_(
 
         noRoll,
 
-        toNumber_(
+        dbToNumber_(
           beratKg
         ),
 
@@ -2014,7 +2014,7 @@ function createHeaderIndexMap_(
     function(header, index) {
 
       const key =
-        cleanString_(
+        dbCleanString_(
           header
         )
         .toLowerCase();
@@ -2053,7 +2053,7 @@ function getMappedValue_(
   ) {
 
     const key =
-      cleanString_(
+      dbCleanString_(
         possibleHeaders[i]
       )
       .toLowerCase();
@@ -2134,13 +2134,13 @@ function arraysEqual_(
 
     if (
 
-      cleanString_(
+      dbCleanString_(
         a[i]
       )
 
       !==
 
-      cleanString_(
+      dbCleanString_(
         b[i]
       )
 
@@ -2172,7 +2172,7 @@ function isBlank_(
 
     value === undefined ||
 
-    cleanString_(
+    dbCleanString_(
       value
     ) === ""
 
@@ -2185,7 +2185,7 @@ function isBlank_(
    CLEAN STRING
 ========================================================= */
 
-function cleanString_(
+function dbCleanString_(
   value
 ) {
 
@@ -2213,7 +2213,7 @@ function cleanString_(
    CONVERT NUMBER
 ========================================================= */
 
-function toNumber_(
+function dbToNumber_(
   value
 ) {
 
@@ -2244,7 +2244,7 @@ function toNumber_(
 
 
   let text =
-    cleanString_(
+    dbCleanString_(
       value
     );
 

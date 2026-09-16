@@ -1,0 +1,1474 @@
+﻿function resetSuratJalanForm(){
+
+  $("sjTanggal").value =
+    getTodayString();
+
+  $("sjPabrik").value =
+    "";
+
+  $("sjAlamat").value =
+    "";
+
+  $("sjNoPo").value =
+    "";
+
+  $("sjKendaraan").value =
+    "";
+
+  $("sjSupir").value =
+    "";
+
+  $("sjJenisPengiriman").value =
+    "Pengiriman Kain Celup";
+
+  $("sjKeterangan").value =
+    "";
+
+  $("suratJalanDetailBody")
+    .innerHTML =
+    "";
+
+  suratJalanRowCounter =
+    0;
+
+  lastSuratJalanId =
+    "";
+
+  lastSuratJalanNumber =
+    "";
+
+  $("suratJalanNumberPreview")
+    .textContent =
+    "Otomatis";
+
+  addSuratJalanRow();
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function addSuratJalanRow(
+  data={}
+){
+
+  const tbody =
+    $("suratJalanDetailBody");
+
+  suratJalanRowCounter++;
+
+
+  const tr =
+    document.createElement("tr");
+
+
+  tr.innerHTML = `
+
+    <td class="text-center">
+      ${suratJalanRowCounter}
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-jenis-kain"
+        value="${escapeHtml(data.jenisKain || "")}"
+        placeholder="Jenis kain">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-warna"
+        value="${escapeHtml(data.warna || "")}"
+        placeholder="Warna">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-no-roll"
+        value="${escapeHtml(data.noRoll || "")}"
+        placeholder="No roll">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="number"
+        class="form-control sj-berat"
+        value="${data.beratKg || ""}"
+        min="0"
+        step="0.01"
+        placeholder="0"
+        oninput="calculateSuratJalanTotal()">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-keterangan"
+        value="${escapeHtml(data.keterangan || "")}"
+        placeholder="Keterangan">
+
+    </td>
+
+
+    <td>
+
+      <button
+        type="button"
+        class="btn btn-danger-soft remove-row"
+        onclick="removeSuratJalanRow(this)">
+
+        <i class="bi bi-trash"></i>
+
+      </button>
+
+    </td>
+
+  `;
+
+
+  tbody.appendChild(tr);
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function removeSuratJalanRow(
+  button
+){
+
+  button
+    .closest("tr")
+    ?.remove();
+
+  renumberSuratJalanRows();
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function renumberSuratJalanRows(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+  rows.forEach(
+    (row,index) => {
+
+      row
+        .querySelector("td")
+        .textContent =
+        index+1;
+
+    }
+  );
+
+  suratJalanRowCounter =
+    rows.length;
+
+}
+
+
+function calculateSuratJalanTotal(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+
+  let totalKg = 0;
+
+
+  rows.forEach(
+    row => {
+
+      totalKg +=
+        Number(
+          row.querySelector(
+            ".sj-berat"
+          )?.value
+        ) || 0;
+
+    }
+  );
+
+
+  $("sjTotalRoll")
+    .textContent =
+    rows.length;
+
+
+  $("sjTotalKg")
+    .textContent =
+    `${formatNumber(totalKg)} Kg`;
+
+}
+
+
+/* =========================================================
+   PABRIK
+========================================================= */
+
+function onPabrikSelected(){
+
+  const id =
+    $("sjPabrik").value;
+
+
+  const pabrik =
+    masterPabrikData.find(
+      item =>
+        String(
+          item.idPabrik || ""
+        ) === String(id)
+    );
+
+
+  $("sjAlamat").value =
+    pabrik?.alamat || "";
+
+}
+
+
+function loadMasterPabrik(){
+
+  callServer(
+    "getMasterPabrik",
+    [],
+
+    function(data){
+
+      masterPabrikData =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      populatePabrikSelect(
+        masterPabrikData
+      );
+
+
+      renderMasterPabrik(
+        masterPabrikData
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil master pabrik.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function populatePabrikSelect(
+  data
+){
+
+  const select =
+    $("sjPabrik");
+
+
+  if(!select){
+    return;
+  }
+
+
+  const current =
+    select.value;
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Pilih pabrik
+    </option>
+
+    ${
+      data.map(
+        item => `
+
+          <option
+            value="${escapeHtml(
+              item.idPabrik || ""
+            )}">
+
+            ${escapeHtml(
+              item.namaPabrik || ""
+            )}
+
+          </option>
+
+        `
+      ).join("")
+    }
+
+  `;
+
+
+  if(current){
+    select.value =
+      current;
+  }
+
+}
+
+
+/* =========================================================
+   SURAT JALAN COLLECT
+========================================================= */
+
+function collectSuratJalanData(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+
+  const detail = [];
+
+
+  rows.forEach(
+    (row,index) => {
+
+      detail.push({
+
+        no:index+1,
+
+        jenisKain:
+          row.querySelector(
+            ".sj-jenis-kain"
+          )?.value
+          .trim() || "",
+
+        warna:
+          row.querySelector(
+            ".sj-warna"
+          )?.value
+          .trim() || "",
+
+        noRoll:
+          row.querySelector(
+            ".sj-no-roll"
+          )?.value
+          .trim() || "",
+
+        beratKg:
+          Number(
+            row.querySelector(
+              ".sj-berat"
+            )?.value
+          ) || 0,
+
+        keterangan:
+          row.querySelector(
+            ".sj-keterangan"
+          )?.value
+          .trim() || ""
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    tanggal:
+      $("sjTanggal").value,
+
+    idPabrik:
+      $("sjPabrik").value,
+
+    alamat:
+      $("sjAlamat").value,
+
+    noPo:
+      $("sjNoPo").value.trim(),
+
+    kendaraan:
+      $("sjKendaraan")
+        .value
+        .trim(),
+
+    namaSupir:
+      $("sjSupir")
+        .value
+        .trim(),
+
+    jenisPengiriman:
+      $("sjJenisPengiriman")
+        .value,
+
+    keterangan:
+      $("sjKeterangan")
+        .value
+        .trim(),
+
+    detail
+
+  };
+
+}
+
+
+/* =========================================================
+   SAVE SURAT JALAN
+========================================================= */
+
+function saveSuratJalanForm(){
+
+  const payload =
+    collectSuratJalanData();
+
+
+  if(!payload.tanggal){
+    showToast(
+      "Tanggal surat jalan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.idPabrik){
+    showToast(
+      "Pabrik tujuan wajib dipilih.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.kendaraan){
+    showToast(
+      "Kendaraan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.namaSupir){
+    showToast(
+      "Nama supir wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.detail.length){
+    showToast(
+      "Detail barang belum ada.",
+      "error"
+    );
+    return;
+  }
+
+
+  const invalid =
+    payload.detail.some(
+      item =>
+        item.beratKg <= 0
+    );
+
+
+  if(invalid){
+
+    showToast(
+      "Berat setiap roll wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !confirmAction(
+      "Simpan surat jalan ke database?"
+    )
+  ){
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan surat jalan..."
+  );
+
+
+  callServer(
+    "saveSuratJalan",
+    [payload],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan surat jalan.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      lastSuratJalanId =
+        result.idSuratJalan ||
+        "";
+
+
+      lastSuratJalanNumber =
+        result.noSuratJalan ||
+        "";
+
+
+      $("suratJalanNumberPreview")
+        .textContent =
+        result.noSuratJalan ||
+        "Tersimpan";
+
+
+      showToast(
+        `Surat jalan ${result.noSuratJalan || ""} berhasil disimpan ke database.`
+      );
+
+
+      // FORM TIDAK DI-RESET
+
+      loadSuratJalan();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   SURAT JALAN HISTORY
+========================================================= */
+
+function loadSuratJalan(){
+
+  const container =
+    $("suratJalanTable");
+
+  if(!container){
+    return;
+  }
+
+  populateHistoryFilters();
+
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat surat jalan...
+      </div>
+    </div>
+  `;
+
+  const keyword =
+    $("sjHistorySearch")?.value || "";
+
+  const year =
+    $("sjHistoryYear")?.value || "";
+
+  const month =
+    $("sjHistoryMonth")?.value || "";
+
+  callServer(
+    "searchSuratJalan",
+    [keyword, year, month],
+
+    function(data){
+
+      renderSuratJalan(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      container.innerHTML =
+        `<div class="empty-state">
+          <div class="empty-state-title">
+            Gagal mengambil surat jalan
+          </div>
+        </div>`;
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function clearSuratJalanHistoryFilter(){
+
+  if($("sjHistorySearch")){
+    $("sjHistorySearch").value = "";
+  }
+
+  if($("sjHistoryMonth")){
+    $("sjHistoryMonth").value =
+      new Date().getMonth()+1;
+  }
+
+  if($("sjHistoryYear")){
+    $("sjHistoryYear").value =
+      new Date().getFullYear();
+  }
+
+  loadSuratJalan();
+
+}
+
+
+function renderSuratJalan(
+  data
+){
+
+  const container =
+    $("suratJalanTable");
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-truck"></i>
+        <div class="empty-state-title">
+          Tidak ada surat jalan
+        </div>
+        <div class="empty-state-text">
+          Coba ubah kata pencarian atau filter.
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+          <th>No Surat Jalan</th>
+          <th>Tanggal</th>
+          <th>Pabrik</th>
+          <th>Kendaraan</th>
+          <th>Supir</th>
+          <th>Jenis Pengiriman</th>
+          <th>Aksi</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.noSuratJalan || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaPabrik ||
+                  item.pabrikTujuan ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kendaraan || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaSupir || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPengiriman || "-"
+                )}
+              </td>
+
+              <td>
+                <button
+                  class="btn btn-soft btn-sm"
+                  onclick="printSuratJalanFromHistory('${escapeHtml(item.idSuratJalan)}')"
+                  title="Cetak ulang">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function printSuratJalanFromHistory(
+  idSuratJalan
+){
+
+  if(!idSuratJalan){
+    showToast(
+      "ID surat jalan tidak ditemukan.",
+      "error"
+    );
+    return;
+  }
+
+  showLoading(
+    "Menyiapkan surat jalan..."
+  );
+
+  callServer(
+    "getSuratJalanById",
+    [idSuratJalan],
+
+    function(data){
+
+      hideLoading();
+
+      if(!data){
+        showToast(
+          "Surat jalan tidak ditemukan.",
+          "error"
+        );
+        return;
+      }
+
+      const header = {
+
+        noSuratJalan:
+          data.noSuratJalan || "",
+
+        tanggal:
+          data.tanggal || "",
+
+        pabrikTujuan:
+          data.namaPabrik ||
+          data.pabrikTujuan ||
+          "",
+
+        alamat:
+          data.alamatPabrik ||
+          data.alamat ||
+          "",
+
+        noPo:
+          data.noPO || "",
+
+        kendaraan:
+          data.kendaraan || "",
+
+        namaSupir:
+          data.namaSupir || "",
+
+        jenisPengiriman:
+          data.jenisPengiriman || "",
+
+        keterangan:
+          data.keterangan || ""
+
+      };
+
+      openPrintWindow(
+        buildSuratJalanPrint(
+          header,
+          data.detail || []
+        )
+      );
+
+      callServer(
+        "recordPrintActivity",
+        ["Surat Jalan", idSuratJalan],
+        function(){},
+        function(){}
+      );
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PRINT SURAT JALAN
+========================================================= */
+
+function printCurrentSuratJalan(){
+
+  const data =
+    collectSuratJalanData();
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal surat jalan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.detail.length){
+    showToast(
+      "Detail barang belum ada.",
+      "error"
+    );
+    return;
+  }
+
+
+  const header = {
+
+    noSuratJalan:
+      lastSuratJalanNumber ||
+      "",
+
+    tanggal:
+      data.tanggal,
+
+    pabrikTujuan:
+      masterPabrikData.find(
+        p =>
+          String(p.idPabrik) ===
+          String(data.idPabrik)
+      )?.namaPabrik || "",
+
+    alamat:
+      data.alamat,
+
+    noPo:
+      data.noPo,
+
+    kendaraan:
+      data.kendaraan,
+
+    namaSupir:
+      data.namaSupir,
+
+    tujuan:
+      data.tujuan,
+
+    jenisPengiriman:
+      data.jenisPengiriman,
+
+    keterangan:
+      data.keterangan
+
+  };
+
+
+  openPrintWindow(
+    buildSuratJalanPrint(
+      header,
+      data.detail
+    )
+  );
+
+}
+
+
+/* =========================================================
+   SURAT JALAN PRINT
+========================================================= */
+
+function buildSuratJalanPrint(
+  h,
+  details
+){
+
+  const totalKg =
+    details.reduce(
+      (sum,item) =>
+        sum +
+        Number(
+          item.beratKg || 0
+        ),
+      0
+    );
+
+
+  const rows =
+    details.map(
+      (item,index) => `
+
+        <tr>
+
+          <td class="center">
+            ${index+1}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.jenisKain || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.warna || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.noRoll || "-"
+            )}
+          </td>
+
+          <td class="right">
+            ${formatNumber(
+              item.beratKg || 0
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.keterangan || "-"
+            )}
+          </td>
+
+        </tr>
+
+      `
+    ).join("");
+
+
+  return `
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Surat Jalan ${escapeHtml(
+  h.noSuratJalan
+)}
+</title>
+
+<style>
+
+@page{
+  size:A5 portrait;
+  margin:8mm;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:9px;
+  color:#111;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1.5px solid #111;
+  padding-bottom:6px;
+  margin-bottom:7px;
+}
+
+.company{
+  font-size:15px;
+  font-weight:bold;
+}
+
+.company-sub{
+  font-size:8px;
+  margin-top:2px;
+}
+
+.title{
+  text-align:right;
+}
+
+.title strong{
+  display:block;
+  font-size:14px;
+}
+
+.print-date{
+  display:block;
+  font-size:8.5px;
+  line-height:1.2;
+}
+
+.info{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  margin-bottom:8px;
+}
+
+.info > tbody > tr > td{
+  width:50%;
+  padding:0;
+  vertical-align:top;
+}
+
+.info .info-half{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.info .info-half td{
+  padding:2px 0;
+  vertical-align:top;
+  line-height:1.2;
+}
+
+.info .info-half .label{
+  width:105px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.info .info-half .sep{
+  width:7px;
+}
+
+.info .right-half{
+  padding-left:18px !important;
+}
+
+.detail{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.detail th,
+.detail td{
+  border:1px solid #222;
+  padding:4px 3px;
+}
+
+.detail th{
+  background:#f3f3f3;
+  font-size:8px;
+}
+
+.center{
+  text-align:center;
+}
+
+.right{
+  text-align:right;
+}
+
+.total{
+  margin-top:7px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.total-box{
+  width:40%;
+}
+
+.total-row{
+  display:flex;
+  justify-content:space-between;
+  padding:2px 0;
+}
+
+.total-main{
+  border-top:1px solid #111;
+  padding-top:4px;
+  font-weight:bold;
+}
+
+.note{
+  margin-top:10px;
+  border-top:1px solid #222;
+  padding-top:5px;
+  font-size:8px;
+}
+
+.signature{
+
+  width:100%;
+  border-collapse:collapse;
+  margin-top:25px;
+
+}
+
+.signature td{
+
+  width:33.33%;
+  text-align:center;
+  vertical-align:top;
+
+}
+
+.space{
+
+  height:48px;
+
+}
+
+.name{
+  font-weight:bold;
+}
+
+.footer{
+  margin-top:10px;
+  text-align:center;
+  font-size:7px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+  <div>
+
+    <div class="company">
+      CV PANDS TEKSTIL
+    </div>
+
+    <div class="company-sub">
+      Dokumen Internal Pengiriman
+    </div>
+
+  </div>
+
+
+  <div class="title">
+
+    <strong>
+      SURAT JALAN
+    </strong>
+
+    <span class="print-date">
+      Dicetak pada
+    </span>
+
+    <span class="print-date">
+      ${formatDate(h.tanggal)}
+    </span>
+
+  </div>
+
+</div>
+
+
+<table class="info">
+
+<tr>
+
+<td>
+  <table class="info-half">
+    <tr>
+      <td class="label">Kepada / Pabrik</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.pabrikTujuan || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Alamat Pabrik</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.alamat || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">No PO / Pesanan</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.noPo || "-")}</td>
+    </tr>
+  </table>
+</td>
+
+<td class="right-half">
+  <table class="info-half">
+    <tr>
+      <td class="label">Kendaraan</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.kendaraan || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Nama Supir</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.namaSupir || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Jenis Pengiriman</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.jenisPengiriman || "-")}</td>
+    </tr>
+  </table>
+</td>
+
+</tr>
+
+</table>
+
+
+<table class="detail">
+
+<thead>
+
+<tr>
+
+<th>No</th>
+<th>Jenis Kain</th>
+<th>Warna</th>
+<th>No Roll</th>
+<th>Berat Kg</th>
+<th>Keterangan</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${rows}
+
+</tbody>
+
+</table>
+
+
+<div class="total">
+
+  <div class="total-box">
+
+    <div class="total-row">
+
+      <span>
+        Total Roll
+      </span>
+
+      <strong>
+        ${details.length}
+      </strong>
+
+    </div>
+
+
+    <div class="total-row total-main">
+
+      <span>
+        Total Kg
+      </span>
+
+      <strong>
+        ${formatNumber(totalKg)} Kg
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="note">
+
+  <strong>
+    Catatan:
+  </strong>
+
+  ${escapeHtml(
+    h.keterangan ||
+    "Barang telah dikirim sesuai rincian di atas."
+  )}
+
+</div>
+
+
+<table class="signature">
+
+<tr>
+
+<td>
+
+  Dikirim Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( CV PANDS TEKSTIL )
+  </div>
+
+</td>
+
+
+<td>
+
+  Dibawa Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( ${escapeHtml(
+      h.namaSupir || "-"
+    )} )
+  </div>
+
+</td>
+
+
+<td>
+
+  Diterima Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( ${escapeHtml(
+      h.pabrikTujuan || "-"
+    )} )
+  </div>
+
+</td>
+
+</tr>
+
+</table>
+
+
+<div class="footer">
+  Dokumen ini merupakan bukti pengiriman dan penerimaan barang.
+</div>
+
+
+</body>
+
+</html>
+
+  `;
+
+}
+
+
+/* =========================================================
+   HPP
+========================================================= */
+

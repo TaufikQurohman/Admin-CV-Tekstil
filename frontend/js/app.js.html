@@ -1,0 +1,235 @@
+﻿const APP_NAME = "CV PANDS TEKSTIL";
+
+let invoiceRowCounter = 0;
+let suratJalanRowCounter = 0;
+
+let lastInvoiceId = "";
+let lastInvoiceNumber = "";
+let editingInvoiceId = "";
+
+let lastSuratJalanId = "";
+let lastSuratJalanNumber = "";
+
+let masterPabrikData = [];
+
+const sectionTitles = {
+
+  dashboard:[
+    "Dashboard",
+    "Ringkasan aktivitas CV Pands Tekstil"
+  ],
+
+  invoice:[
+    "Invoice",
+    "Pembuatan invoice penjualan"
+  ],
+
+  pembukuanGrey:[
+    "Pembukuan Kain Grey",
+    "Pencatatan penjualan kain Grey"
+  ],
+
+  pembukuanJadi:[
+    "Pembukuan Kain Jadi",
+    "Pencatatan penjualan Kain Jadi"
+  ],
+
+  hpp:[
+    "HPP",
+    "Pembelian dan retur"
+  ],
+
+  pengeluaran:[
+    "Pengeluaran",
+    "Pencatatan pengeluaran perusahaan"
+  ],
+
+  suratJalan:[
+    "Surat Jalan",
+    "Pengiriman kain ke pabrik"
+  ],
+
+  masterPabrik:[
+    "Master Pabrik",
+    "Daftar pabrik tujuan"
+  ],
+
+  logAktivitas:[
+    "Log Aktivitas",
+    "Riwayat aktivitas pengguna dan sistem"
+  ]
+
+};
+
+
+function showSection(
+  sectionId,
+  button
+){
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach(
+      section =>
+        section.classList.remove("active")
+    );
+
+
+  const section =
+    $(sectionId);
+
+  if(section){
+    section.classList.add("active");
+  }
+
+
+  document
+    .querySelectorAll(".menu-item")
+    .forEach(
+      item =>
+        item.classList.remove("active")
+    );
+
+
+  if(button){
+    button.classList.add("active");
+  }
+
+
+  const title =
+    sectionTitles[sectionId];
+
+  if(title){
+
+    $("pageTitle").textContent =
+      title[0];
+
+    $("pageSubtitle").textContent =
+      title[1];
+
+  }
+
+
+  if(sectionId === "dashboard"){
+    loadDashboard();
+  }
+
+  if(sectionId === "invoice"){
+    loadInvoiceHistory();
+  }
+
+  if(sectionId === "pembukuanGrey"){
+    loadPembukuanGrey();
+  }
+
+  if(sectionId === "pembukuanJadi"){
+    loadPembukuanJadi();
+  }
+
+  if(sectionId === "hpp"){
+    loadHpp();
+    loadHppSummary();
+  }
+
+  if(sectionId === "pengeluaran"){
+    loadPengeluaran();
+  }
+
+  if(sectionId === "suratJalan"){
+    loadMasterPabrik();
+    loadSuratJalan();
+  }
+
+  if(sectionId === "masterPabrik"){
+    loadMasterPabrik();
+  }
+
+  if(sectionId === "logAktivitas"){
+    loadActivityLog();
+  }
+
+
+}
+
+
+function showSectionById(
+  sectionId
+){
+
+  const button =
+    document.querySelector(
+      `.menu-item[onclick*="'${sectionId}'"]`
+    );
+
+  showSection(
+    sectionId,
+    button
+  );
+
+}
+
+
+function refreshCurrentSection(){
+
+  const active =
+    document.querySelector(
+      ".page-section.active"
+    );
+
+  if(!active){
+    return;
+  }
+
+  const id =
+    active.id;
+
+  if(id === "dashboard"){
+    loadDashboard();
+  }
+
+  else if(id === "invoice"){
+    loadInvoiceHistory();
+  }
+
+  else if(id === "pembukuanGrey"){
+    loadPembukuanGrey();
+  }
+
+  else if(id === "pembukuanJadi"){
+    loadPembukuanJadi();
+  }
+
+  else if(id === "hpp"){
+    loadHpp();
+    loadHppSummary();
+  }
+
+  else if(id === "pengeluaran"){
+    loadPengeluaran();
+  }
+
+  else if(id === "suratJalan"){
+    loadSuratJalan();
+  }
+
+  else if(id === "masterPabrik"){
+    loadMasterPabrik();
+  }
+
+
+}
+
+
+/* =========================================================
+   MONTH / YEAR
+========================================================= */
+
+
+function initApp(){
+  checkExistingLogin();
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  initApp
+);

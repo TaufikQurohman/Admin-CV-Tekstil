@@ -1,0 +1,216 @@
+﻿function renderMasterPabrik(
+  data
+){
+
+  const container =
+    $("masterPabrikTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-building"></i>
+
+        <div class="empty-state-title">
+          Belum ada pabrik
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>No</th>
+          <th>Nama Pabrik</th>
+          <th>Alamat</th>
+          <th>Kontak</th>
+          <th>Keterangan</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          (item,index) => `
+
+            <tr>
+
+              <td>
+                ${index+1}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.namaPabrik || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.alamat || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.keterangan || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function saveMasterPabrikForm(){
+
+  const data = {
+
+    namaPabrik:
+      $("masterPabrikNama")
+        .value
+        .trim(),
+
+    alamat:
+      $("masterPabrikAlamat")
+        .value
+        .trim(),
+
+    kontak:
+      $("masterPabrikKontak")
+        .value
+        .trim(),
+
+    keterangan:
+      $("masterPabrikKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.namaPabrik){
+
+    showToast(
+      "Nama pabrik wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showLoading(
+    "Menyimpan pabrik..."
+  );
+
+
+  callServer(
+    "saveMasterPabrik",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan pabrik.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "Pabrik berhasil disimpan."
+      );
+
+
+      $("masterPabrikNama").value =
+        "";
+
+      $("masterPabrikAlamat").value =
+        "";
+
+      $("masterPabrikKontak").value =
+        "";
+
+      $("masterPabrikKeterangan").value =
+        "";
+
+
+      loadMasterPabrik();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan pabrik.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PEMBUKUAN
+========================================================= */
+

@@ -1,0 +1,2612 @@
+﻿<body>
+
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-logo">PT</div>
+      <div class="login-title">CV PANDS TEKSTIL</div>
+      <div class="login-subtitle">Sistem Administrasi</div>
+    </div>
+
+    <div id="loginError" class="login-error"></div>
+
+    <form onsubmit="event.preventDefault(); doLogin();">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="loginUsername"
+          autocomplete="username"
+          placeholder="Masukkan username"
+          required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="loginPassword"
+          autocomplete="current-password"
+          placeholder="Masukkan password"
+          required>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary login-btn"
+        id="loginButton">
+        <i class="bi bi-box-arrow-in-right me-1"></i>
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <div class="brand-wrap">
+
+      <div class="brand-logo">
+        PT
+      </div>
+
+      <div>
+
+        <div class="brand-title">
+          CV PANDS TEKSTIL
+        </div>
+
+        <div class="brand-subtitle">
+          Sistem Administrasi
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="menu-section">
+
+    <div class="menu-title">
+      Menu Utama
+    </div>
+
+    <button
+      class="menu-item active"
+      onclick="showSection('dashboard',this)">
+
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Dashboard</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('invoice',this)">
+
+      <i class="bi bi-receipt-cutoff"></i>
+      <span>Invoice</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pembukuanGrey',this)">
+
+      <i class="bi bi-box-seam"></i>
+      <span>Pembukuan Grey</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pembukuanJadi',this)">
+
+      <i class="bi bi-boxes"></i>
+      <span>Pembukuan Kain Jadi</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('hpp',this)">
+
+      <i class="bi bi-calculator"></i>
+      <span>HPP</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pengeluaran',this)">
+
+      <i class="bi bi-wallet2"></i>
+      <span>Pengeluaran</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('suratJalan',this)">
+
+      <i class="bi bi-truck"></i>
+      <span>Surat Jalan</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('masterPabrik',this)">
+
+      <i class="bi bi-building"></i>
+      <span>Master Pabrik</span>
+
+    </button>
+
+
+
+
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+  <header class="topbar">
+
+    <div>
+
+      <h1
+        class="page-title"
+        id="pageTitle">
+
+        Dashboard
+
+      </h1>
+
+      <div
+        class="page-subtitle"
+        id="pageSubtitle">
+
+        Ringkasan aktivitas CV Pands Tekstil
+
+      </div>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+      <div class="connection-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+          Terhubung
+        </span>
+
+      </div>
+
+      <div class="user-box">
+        <i class="bi bi-person-circle"></i>
+        <span id="loggedInUser">admin</span>
+      </div>
+
+      <button
+        class="btn btn-soft"
+        onclick="backupDatabaseForm()"
+        title="Backup Database">
+        <i class="bi bi-cloud-arrow-down"></i>
+      </button>
+
+      <button
+        class="btn btn-soft"
+        onclick="refreshCurrentSection()"
+        title="Refresh">
+
+        <i class="bi bi-arrow-clockwise"></i>
+
+      </button>
+
+      <button
+        class="btn btn-logout"
+        onclick="doLogout()"
+        title="Logout">
+
+        <i class="bi bi-box-arrow-right me-1"></i>
+        Logout
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="content">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+  id="dashboard"
+  class="page-section active">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Dashboard
+      </h2>
+
+      <p class="section-description">
+        Ringkasan transaksi dan aktivitas administrasi.
+      </p>
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="showSectionById('invoice')">
+
+      <i class="bi bi-plus-lg me-1"></i>
+
+      Buat Invoice
+
+    </button>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL INVOICE
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalInvoice">
+
+        0
+
+      </div>
+
+      <div class="stat-note">
+        Semua invoice tercatat
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash-stack"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN BULAN INI
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalPenjualan">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Grey + Kain Jadi
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN GREY
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalGrey">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Bulan berjalan
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-boxes"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN KAIN JADI
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalJadi">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Bulan berjalan
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-lg-8">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Invoice Terbaru
+          </h3>
+
+          <button
+            class="btn btn-soft btn-sm"
+            onclick="showSectionById('invoice')">
+
+            Lihat Semua
+
+          </button>
+
+        </div>
+
+
+        <div
+          class="table-wrap"
+          id="dashboardInvoiceTable">
+
+          <div class="empty-state">
+
+            <div class="loading-spinner"></div>
+
+            <div class="empty-state-title">
+              Memuat data...
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Ringkasan
+          </h3>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+          <div class="total-row">
+
+            <span>
+              HPP Bulan Ini
+            </span>
+
+            <strong id="dashHpp">
+              Rp 0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row">
+
+            <span>
+              Pengeluaran
+            </span>
+
+            <strong id="dashPengeluaran">
+              Rp 0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row">
+
+            <span>
+              Surat Jalan
+            </span>
+
+            <strong id="dashSuratJalan">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row total-main">
+
+            <span>
+              Penjualan Bersih
+            </span>
+
+            <strong id="dashPenjualanBersih">
+              Rp 0
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     INVOICE
+===================================================== -->
+
+<section
+  id="invoice"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Invoice
+      </h2>
+
+      <p class="section-description">
+        Pembuatan invoice penjualan kain Grey maupun Kain Jadi.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Informasi Invoice
+      </h3>
+
+
+      <div class="invoice-number-box">
+
+        <span>
+          Nomor Invoice
+        </span>
+
+        <strong id="invoiceNumberPreview">
+          Otomatis
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="invoiceTanggal">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Nama Pembeli
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoicePembeli"
+            placeholder="Ketik nama pembeli">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kategori Penjualan
+          </label>
+
+          <select
+            class="form-select"
+            id="invoiceJenisKain">
+
+            <option value="">
+              Pilih jenis penjualan
+            </option>
+
+            <option value="Grey">
+              Grey
+            </option>
+
+            <option value="Kain Jadi">
+              Kain Jadi
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            No PO
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceNoPo"
+            placeholder="Nomor PO / Pesanan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Alamat Pembeli
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceAlamat"
+            placeholder="Alamat pembeli">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Jenis Pembayaran
+          </label>
+
+          <select
+            class="form-select"
+            id="invoicePembayaran">
+
+            <option value="">
+              Pilih pembayaran
+            </option>
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="Transfer">
+              Transfer
+            </option>
+
+            <option value="QRIS">
+              QRIS
+            </option>
+
+            <option value="Debit">
+              Debit
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            DP
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="invoiceDp"
+            value="0"
+            min="0"
+            step="1"
+            oninput="calculateInvoiceTotal()">
+
+        </div>
+
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <textarea
+            class="form-control"
+            id="invoiceKeterangan"
+            placeholder="Keterangan tambahan jika ada"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <div>
+
+        <h3 class="card-header-title">
+          Detail Barang
+        </h3>
+
+        <div class="form-hint">
+          Qty dapat diisi dalam Kg atau Meter.           Printing Gambar, dan jenis lainnya ditulis pada kolom Jenis Kain.
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary btn-sm"
+        onclick="addInvoiceRow()">
+
+        <i class="bi bi-plus-lg me-1"></i>
+
+        Tambah Baris
+
+      </button>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table
+        class="table-custom invoice-detail-table">
+
+        <thead>
+
+          <tr>
+
+            <th style="width:45px">
+              No
+            </th>
+<th style="min-width:160px">
+              Jenis Kain
+            </th>
+
+            <th style="min-width:110px">
+              Warna
+            </th>
+
+            <th style="min-width:100px">
+              No Roll
+            </th>
+
+            <th style="min-width:90px">
+              Qty
+            </th>
+
+            <th style="min-width:95px">
+              Satuan
+            </th>
+
+            <th style="min-width:125px">
+              Harga Satuan
+            </th>
+
+            <th style="min-width:140px">
+              Total
+            </th>
+
+            <th style="width:55px"></th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="invoiceDetailBody">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-lg-7">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Catatan Invoice
+          </h3>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+          <div
+            class="alert-custom alert-info-custom mb-0">
+
+            <strong>
+              NO REK. AN / FANDS TEKSTIL
+            </strong>
+
+            <br>
+
+            2095937505 BNI
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-5">
+
+      <div class="total-box">
+
+        <div class="total-row">
+
+          <span>
+            Subtotal
+          </span>
+
+          <strong id="invoiceSubtotal">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row">
+
+          <span>
+            DP
+          </span>
+
+          <strong id="invoiceDpDisplay">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row total-main">
+
+          <span>
+            Total Invoice
+          </span>
+
+          <strong id="invoiceTotal">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row">
+
+          <span>
+            Sisa Tagihan
+          </span>
+
+          <strong id="invoiceSisa">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="d-flex justify-content-end gap-2 mt-3 flex-wrap">
+
+          <button
+            type="button"
+            class="btn btn-soft"
+            onclick="resetInvoiceForm()">
+
+            <i class="bi bi-file-earmark-plus me-1"></i>
+
+            Buat Baru
+
+          </button>
+
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="saveInvoiceForm()">
+
+            <i class="bi bi-database-check me-1"></i>
+
+            <span id="invoiceSaveButtonText">Simpan ke Database</span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="btn btn-print"
+            onclick="printCurrentInvoice()">
+
+            <i class="bi bi-printer me-1"></i>
+
+            Cetak
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mt-4">
+
+    <div class="card-header-custom">
+
+      <div>
+        <h3 class="card-header-title">
+          Riwayat Invoice
+        </h3>
+
+        <div class="form-hint">
+          Cari, filter, cetak ulang, edit, atau batalkan invoice.
+        </div>
+      </div>
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadInvoiceHistory()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-body-custom border-bottom">
+
+      <div class="row g-2 align-items-end">
+
+        <div class="col-lg-5">
+          <label class="form-label">Cari Invoice</label>
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceHistorySearch"
+            placeholder="No invoice / nama pembeli / No PO"
+            oninput="loadInvoiceHistory()">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Bulan</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryMonth"
+            onchange="loadInvoiceHistory()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Tahun</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryYear"
+            onchange="loadInvoiceHistory()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Status</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryStatus"
+            onchange="loadInvoiceHistory()">
+            <option value="">Semua Status</option>
+            <option value="Lunas">Lunas</option>
+            <option value="DP">DP</option>
+            <option value="Belum Lunas">Belum Lunas</option>
+            <option value="Dibatalkan">Dibatalkan</option>
+          </select>
+        </div>
+
+        <div class="col-md-1">
+          <button
+            class="btn btn-soft w-100"
+            onclick="clearInvoiceHistoryFilter()"
+            title="Reset filter">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrap"
+      id="invoiceHistoryTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMBUKUAN GREY
+===================================================== -->
+
+<section
+  id="pembukuanGrey"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pembukuan Kain Grey
+      </h2>
+
+      <p class="section-description">
+        Data penjualan kain Grey yang berasal dari invoice.
+      </p>
+
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+      <select
+        class="form-select"
+        id="greyMonth"
+        style="width:130px"
+        onchange="loadPembukuanGrey()">
+      </select>
+
+
+      <select
+        class="form-select"
+        id="greyYear"
+        style="width:100px"
+        onchange="loadPembukuanGrey()">
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TRANSAKSI
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalTransaksi">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-rulers"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL METER
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalMeter">
+        0 M
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-speedometer2"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL KG
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalKg">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalPenjualan">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pembukuan Grey
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPembukuanGrey()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="greyTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMBUKUAN KAIN JADI
+===================================================== -->
+
+<section
+  id="pembukuanJadi"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pembukuan Kain Jadi
+      </h2>
+
+      <p class="section-description">
+        Data penjualan kain yang sudah jadi.
+      </p>
+
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+      <select
+        class="form-select"
+        id="jadiMonth"
+        style="width:130px"
+        onchange="loadPembukuanJadi()">
+      </select>
+
+
+      <select
+        class="form-select"
+        id="jadiYear"
+        style="width:100px"
+        onchange="loadPembukuanJadi()">
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TRANSAKSI
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalTransaksi">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-rulers"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL METER
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalMeter">
+        0 M
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-speedometer2"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL KG
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalKg">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalPenjualan">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pembukuan Kain Jadi
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPembukuanJadi()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="jadiTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     HPP
+===================================================== -->
+
+<section
+  id="hpp"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        HPP
+      </h2>
+
+      <p class="section-description">
+        Pencatatan pembelian dan retur untuk perhitungan HPP.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Input HPP
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="hppTanggal">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Supplier
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppSupplier"
+            placeholder="Nama supplier">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Nama Barang
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppNamaBarang"
+            placeholder="Nama barang">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Warna
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppWarna"
+            placeholder="Warna">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jumlah
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppJumlah"
+            min="0"
+            step="0.01"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Harga Satuan
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppHarga"
+            min="0"
+            step="1"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Pajak
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppPajak"
+            value="0"
+            min="0"
+            step="1">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jenis Transaksi
+          </label>
+
+          <select
+            class="form-select"
+            id="hppJenisTransaksi">
+
+            <option value="Pembelian">
+              Pembelian
+            </option>
+
+            <option value="Retur">
+              Retur
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-md-2 d-flex align-items-end">
+
+          <button
+            class="btn btn-primary w-100"
+            onclick="saveHppForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan HPP
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        PEMBELIAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppTotalPembelian">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        RETUR
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppTotalRetur">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        HPP BERSIH
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppBersih">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        STATUS PENGELUARAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppStatusPengeluaran"
+        style="font-size:15px">
+        Belum
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <div>
+
+        <h3 class="card-header-title">
+          HPP Bulanan
+        </h3>
+
+        <div class="form-hint">
+          HPP bersih dimasukkan ke Pengeluaran satu kali setiap bulan.
+        </div>
+
+      </div>
+
+
+      <div class="d-flex gap-2">
+
+        <select
+          class="form-select"
+          id="hppMonth"
+          style="width:130px"
+          onchange="loadHppSummary()">
+        </select>
+
+
+        <select
+          class="form-select"
+          id="hppYear"
+          style="width:100px"
+          onchange="loadHppSummary()">
+        </select>
+
+
+        <button
+          class="btn btn-primary"
+          onclick="masukkanHppKePengeluaranForm()">
+
+          Masukkan ke Pengeluaran
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data HPP
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadHpp()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="hppTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PENGELUARAN
+===================================================== -->
+
+<section
+  id="pengeluaran"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pengeluaran
+      </h2>
+
+      <p class="section-description">
+        Pencatatan pengeluaran operasional perusahaan.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Input Pengeluaran
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="pengeluaranTanggal">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Nama
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranNama"
+            placeholder="Nama">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kebutuhan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranKebutuhan"
+            placeholder="Kebutuhan">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jumlah
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="pengeluaranJumlah"
+            min="0"
+            step="1"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Jenis Pembayaran
+          </label>
+
+          <select
+            class="form-select"
+            id="pengeluaranPembayaran">
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="Transfer">
+              Transfer
+            </option>
+
+            <option value="QRIS">
+              QRIS
+            </option>
+
+            <option value="Debit">
+              Debit
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kategori
+          </label>
+
+          <select
+            class="form-select"
+            id="pengeluaranKategori">
+
+            <option value="HPP">
+              HPP
+            </option>
+
+            <option value="Celup">
+              Celup
+            </option>
+
+            <option value="Bensin">
+              Bensin
+            </option>
+
+            <option value="Operasional">
+              Operasional
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-7">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-md-2 d-flex align-items-end">
+
+          <button
+            class="btn btn-primary w-100"
+            onclick="savePengeluaranForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        TOTAL PENGELUARAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="pengeluaranTotal">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pengeluaran
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPengeluaran()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="pengeluaranTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     SURAT JALAN
+===================================================== -->
+
+<section
+  id="suratJalan"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Surat Jalan
+      </h2>
+
+      <p class="section-description">
+        Surat jalan internal pengiriman kain ke pabrik celup.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Informasi Pengiriman
+      </h3>
+
+
+      <div class="invoice-number-box">
+
+        <span>
+          Nomor Surat Jalan
+        </span>
+
+        <strong id="suratJalanNumberPreview">
+          Otomatis
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="sjTanggal">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Pabrik
+          </label>
+
+          <select
+            class="form-select"
+            id="sjPabrik"
+            onchange="onPabrikSelected()">
+
+            <option value="">
+              Pilih pabrik
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Alamat Pabrik
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjAlamat"
+            readonly>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            No PO
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjNoPo"
+            placeholder="No PO / Pesanan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Kendaraan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjKendaraan"
+            placeholder="Nomor kendaraan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Nama Supir
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjSupir"
+            placeholder="Nama supir">
+
+        </div>
+
+
+        <input type="hidden" id="sjJenisPengiriman" value="Pengiriman Kain Celup">
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <textarea
+            class="form-control"
+            id="sjKeterangan"
+            placeholder="Keterangan pengiriman"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Detail Barang
+      </h3>
+
+
+      <button
+        class="btn btn-primary btn-sm"
+        onclick="addSuratJalanRow()">
+
+        <i class="bi bi-plus-lg me-1"></i>
+
+        Tambah Baris
+
+      </button>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table class="table-custom">
+
+        <thead>
+
+          <tr>
+
+            <th>No</th>
+            <th>Jenis Kain</th>
+            <th>Warna</th>
+            <th>No Roll</th>
+            <th>Berat Kg</th>
+            <th>Keterangan</th>
+            <th></th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="suratJalanDetailBody">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-md-7">
+
+      <div class="card-custom">
+
+        <div class="card-body-custom">
+
+          <div class="total-row">
+
+            <span>
+              Total Roll
+            </span>
+
+            <strong id="sjTotalRoll">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row total-main">
+
+            <span>
+              Total Kg
+            </span>
+
+            <strong id="sjTotalKg">
+              0 Kg
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-md-5">
+
+      <div class="total-box">
+
+        <div class="d-flex justify-content-end gap-2 flex-wrap">
+
+          <button
+            class="btn btn-soft"
+            onclick="resetSuratJalanForm()">
+
+            <i class="bi bi-file-earmark-plus me-1"></i>
+
+            Buat Baru
+
+          </button>
+
+
+          <button
+            class="btn btn-primary"
+            onclick="saveSuratJalanForm()">
+
+            <i class="bi bi-database-check me-1"></i>
+
+            Simpan ke Database
+
+          </button>
+
+
+          <button
+            class="btn btn-print"
+            onclick="printCurrentSuratJalan()">
+
+            <i class="bi bi-printer me-1"></i>
+
+            Cetak
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mt-4">
+
+    <div class="card-header-custom">
+
+      <div>
+        <h3 class="card-header-title">
+          Riwayat Surat Jalan
+        </h3>
+
+        <div class="form-hint">
+          Cari dan cetak ulang surat jalan yang sudah tersimpan.
+        </div>
+      </div>
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadSuratJalan()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-body-custom border-bottom">
+
+      <div class="row g-2 align-items-end">
+
+        <div class="col-lg-6">
+          <label class="form-label">Cari Surat Jalan</label>
+          <input
+            type="text"
+            class="form-control"
+            id="sjHistorySearch"
+            placeholder="No surat jalan / pabrik / kendaraan / supir"
+            oninput="loadSuratJalan()">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Bulan</label>
+          <select
+            class="form-select"
+            id="sjHistoryMonth"
+            onchange="loadSuratJalan()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Tahun</label>
+          <select
+            class="form-select"
+            id="sjHistoryYear"
+            onchange="loadSuratJalan()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button
+            class="btn btn-soft w-100"
+            onclick="clearSuratJalanHistoryFilter()">
+            <i class="bi bi-x-lg me-1"></i>
+            Reset
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrap"
+      id="suratJalanTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MASTER PABRIK
+===================================================== -->
+
+<section
+  id="masterPabrik"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Master Pabrik
+      </h2>
+
+      <p class="section-description">
+        Daftar pabrik tujuan pengiriman kain.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Tambah Pabrik
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Nama Pabrik
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikNama"
+            placeholder="Nama pabrik">
+
+        </div>
+
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Alamat
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikAlamat"
+            placeholder="Alamat pabrik">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Kontak
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikKontak"
+            placeholder="No. HP / Telp">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-12">
+
+          <button
+            class="btn btn-primary"
+            onclick="saveMasterPabrikForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan Pabrik
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Daftar Pabrik
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadMasterPabrik()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="masterPabrikTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+
+  <section
+    id="logAktivitas"
+    class="page-section">
+
+    <div class="section-header">
+
+      <div>
+        <h2 class="section-title">
+          Log Aktivitas
+        </h2>
+
+        <p class="section-description">
+          Riwayat aktivitas pengguna dan sistem.
+        </p>
+      </div>
+
+      <button
+        class="btn btn-soft"
+        onclick="loadActivityLog()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-custom">
+
+      <div class="card-header-custom">
+
+        <div>
+          <h3 class="card-header-title">
+            Riwayat Aktivitas
+          </h3>
+
+          <div class="form-hint">
+            Aktivitas penting seperti membuat, mengedit, membatalkan, mencetak, dan backup.
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        class="table-wrap"
+        id="activityLogTable">
+      </div>
+
+    </div>
+
+  </section>
+
+
+  </div>
+
+</main>
+
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div
+  class="loading-overlay"
+  id="loadingOverlay">
+
+  <div class="loading-box">
+
+    <div class="loading-spinner"></div>
+
+    <div
+      class="loading-text"
+      id="loadingText">
+
+      Memproses...
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast-container-custom"
+  id="toastContainer">
+</div>
+
+
+

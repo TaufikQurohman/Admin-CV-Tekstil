@@ -1,0 +1,174 @@
+﻿let authToken = sessionStorage.getItem("pands_auth_token") || "";
+let authUsername = sessionStorage.getItem("pands_auth_username") || "";
+
+function setLoginState(token, username){
+  authToken = token || "";
+  authUsername = username || "admin";
+
+  if(authToken){
+    sessionStorage.setItem("pands_auth_token", authToken);
+    sessionStorage.setItem("pands_auth_username", authUsername);
+  }else{
+    sessionStorage.removeItem("pands_auth_token");
+    sessionStorage.removeItem("pands_auth_username");
+  }
+}
+
+function showLoginScreen(message=""){
+  const screen = $("loginScreen");
+  if(screen) screen.style.display = "flex";
+
+  if(message){
+    const box = $("loginError");
+    if(box){
+      box.textContent = message;
+      box.classList.add("show");
+    }
+  }
+}
+
+function hideLoginScreen(){
+  const screen = $("loginScreen");
+  if(screen) screen.style.display = "none";
+
+  const box = $("loginError");
+  if(box){
+    box.textContent = "";
+    box.classList.remove("show");
+  }
+
+  if($("loggedInUser")){
+    $("loggedInUser").textContent = authUsername || "admin";
+  }
+}
+
+function doLogin(){
+  const username = ($("loginUsername")?.value || "").trim();
+  const password = $("loginPassword")?.value || "";
+  const button = $("loginButton");
+  const errorBox = $("loginError");
+
+  if(errorBox){
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+  }
+
+  if(!username || !password){
+    showLoginScreen("Username dan password wajib diisi.");
+    return;
+  }
+
+  if(button){
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memeriksa...';
+  }
+
+  google.script.run
+    .withSuccessHandler(function(result){
+      if(button){
+        button.disabled = false;
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+      }
+
+      if(!result || !result.success || !result.token){
+        showLoginScreen("Login gagal.");
+        return;
+      }
+
+      setLoginState(result.token, result.username || username);
+      hideLoginScreen();
+      initAuthenticatedApp();
+    })
+    .withFailureHandler(function(error){
+      if(button){
+        button.disabled = false;
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+      }
+
+      showLoginScreen(error?.message || "Username atau password salah.");
+    })
+    .login(username, password);
+}
+
+function doLogout(){
+  const token = authToken;
+
+  if(!confirmAction("Logout dari aplikasi?")){
+    return;
+  }
+
+  // Hapus sesi lokal terlebih dahulu agar aplikasi langsung kembali ke login.
+  setLoginState("", "");
+
+  if($('loginPassword')){
+    $('loginPassword').value = "";
+  }
+
+  if($('loginUsername')){
+    $('loginUsername').value = "";
+  }
+
+  // Tampilkan halaman login tanpa perlu refresh browser.
+  showLoginScreen();
+
+  if(token){
+    google.script.run
+      .withFailureHandler(function(){
+        // Login screen tetap ditampilkan walaupun server gagal menerima logout.
+      })
+      .logout(token);
+  }
+}
+
+function checkExistingLogin(){
+  if(!authToken){
+    showLoginScreen();
+    return;
+  }
+
+  google.script.run
+    .withSuccessHandler(function(result){
+      if(result && result.loggedIn){
+        authUsername = result.username || authUsername || "admin";
+        sessionStorage.setItem("pands_auth_username", authUsername);
+        hideLoginScreen();
+        initAuthenticatedApp();
+      }else{
+        setLoginState("", "");
+        showLoginScreen();
+      }
+    })
+    .withFailureHandler(function(){
+      setLoginState("", "");
+      showLoginScreen();
+    })
+    .checkLogin(authToken);
+}
+
+function initAuthenticatedApp(){
+  setupMonthYearSelectors();
+  populateHistoryFilters();
+
+  if($("invoiceTanggal")) $("invoiceTanggal").value = getTodayString();
+  if($("hppTanggal")) $("hppTanggal").value = getTodayString();
+  if($("pengeluaranTanggal")) $("pengeluaranTanggal").value = getTodayString();
+  if($("sjTanggal")) $("sjTanggal").value = getTodayString();
+
+  if($("invoiceDetailBody") && !$("invoiceDetailBody").children.length){
+    addInvoiceRow();
+  }
+
+  if($("suratJalanBody") && !$("suratJalanBody").children.length){
+    addSuratJalanRow();
+  }
+
+  loadDashboard();
+  loadMasterPabrik();
+}
+
+
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+

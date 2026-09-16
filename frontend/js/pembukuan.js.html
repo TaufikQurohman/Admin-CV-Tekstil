@@ -1,0 +1,206 @@
+﻿function loadPembukuanGrey(){
+
+  const month =
+    Number(
+      $("greyMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("greyYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getPembukuanGrey",
+    [],
+
+    function(data){
+
+      renderPembukuan(
+        data,
+        "grey",
+        year,
+        month
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pembukuan Grey.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadPembukuanJadi(){
+
+  const month =
+    Number(
+      $("jadiMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("jadiYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getPembukuanKainJadi",
+    [],
+
+    function(data){
+
+      renderPembukuan(
+        data,
+        "jadi",
+        year,
+        month
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pembukuan Kain Jadi.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderPembukuan(
+  data,
+  type,
+  targetYear,
+  targetMonth
+){
+
+  let rows =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  const tableId =
+    type === "grey"
+      ? "greyTable"
+      : "jadiTable";
+
+  const container =
+    $(tableId);
+
+  if(!container){
+    return;
+  }
+
+  // Filter bulan/tahun sesuai selector.
+  rows = rows.filter(item => {
+    const date = parseClientDate(item.tanggal);
+    return date &&
+      date.getFullYear() === Number(targetYear) &&
+      date.getMonth() + 1 === Number(targetMonth);
+  });
+
+  let totalKg = 0;
+  let totalMeter = 0;
+  let totalPenjualan = 0;
+
+  rows.forEach(item => {
+    const jumlah = Number(item.jumlah ?? item.qty ?? item.jumlahKg ?? 0) || 0;
+    const satuan = String(item.satuan || "Kg").toLowerCase();
+
+    if(satuan === "meter"){
+      totalMeter += jumlah;
+    }else{
+      totalKg += jumlah;
+    }
+
+    totalPenjualan +=
+      Number(item.totalPenjualan || item.total || 0);
+  });
+
+  if(type === "grey"){
+    $("greyTotalTransaksi").textContent = formatNumber(rows.length);
+    $("greyTotalKg").textContent = formatNumber(totalKg) + " Kg";
+    // Tidak lagi memakai Total Roll sebagai ukuran pembukuan.
+    const meterEl = $("greyTotalMeter");
+    if(meterEl) meterEl.textContent = formatNumber(totalMeter) + " M";
+    $("greyTotalPenjualan").textContent = formatRupiah(totalPenjualan);
+  }else{
+    $("jadiTotalTransaksi").textContent = formatNumber(rows.length);
+    $("jadiTotalKg").textContent = formatNumber(totalKg) + " Kg";
+    const meterEl = $("jadiTotalMeter");
+    if(meterEl) meterEl.textContent = formatNumber(totalMeter) + " M";
+    $("jadiTotalPenjualan").textContent = formatRupiah(totalPenjualan);
+  }
+
+  if(!rows.length){
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-box-seam"></i>
+        <div class="empty-state-title">Belum ada data pembukuan</div>
+        <div class="empty-state-text">Tidak ada transaksi pada periode yang dipilih.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>No Invoice</th>
+          <th>Pembeli</th>
+          <th>Jumlah</th>
+          <th>Satuan</th>
+          <th>Berat Kg</th>
+          <th>Jenis Kain</th>
+          <th>Warna</th>
+          <th>Harga Satuan</th>
+          <th>Pembayaran</th>
+          <th>Total Penjualan</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(item => `
+          <tr>
+            <td>${formatDate(item.tanggal)}</td>
+            <td>${escapeHtml(item.noInvoice || "-")}</td>
+            <td>${escapeHtml(item.namaPembeli || "-")}</td>
+            <td>${formatNumber(item.jumlah ?? item.qty ?? item.jumlahKg ?? 0)}</td>
+            <td><span class="unit-badge">${escapeHtml(item.satuan || "Kg")}</span></td>
+            <td>${item.beratKg === "" || item.beratKg == null ? "-" : formatNumber(item.beratKg) + " Kg"}</td>
+            <td>${escapeHtml(item.jenisKain || "-")}</td>
+            <td>${escapeHtml(item.warna || "-")}</td>
+            <td>${formatRupiah(item.hargaSatuan ?? item.harga ?? 0)}</td>
+            <td>${escapeHtml(item.jenisPembayaran || "-")}</td>
+            <td><strong>${formatRupiah(item.totalPenjualan || item.total || 0)}</strong></td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+

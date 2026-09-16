@@ -1,0 +1,333 @@
+﻿function resetPengeluaranForm(){
+
+  $("pengeluaranTanggal").value =
+    getTodayString();
+
+  $("pengeluaranNama").value =
+    "";
+
+  $("pengeluaranKebutuhan").value =
+    "";
+
+  $("pengeluaranJumlah").value =
+    "";
+
+  $("pengeluaranPembayaran").value =
+    "Cash";
+
+  $("pengeluaranKategori").value =
+    "Operasional";
+
+  $("pengeluaranKeterangan").value =
+    "";
+
+}
+
+
+function savePengeluaranForm(){
+
+  const data = {
+
+    tanggal:
+      $("pengeluaranTanggal").value,
+
+    nama:
+      $("pengeluaranNama")
+        .value
+        .trim(),
+
+    kebutuhan:
+      $("pengeluaranKebutuhan")
+        .value
+        .trim(),
+
+    jumlah:
+      Number(
+        $("pengeluaranJumlah").value
+      ) || 0,
+
+    jenisPembayaran:
+      $("pengeluaranPembayaran")
+        .value,
+
+    kategori:
+      $("pengeluaranKategori")
+        .value,
+
+    keterangan:
+      $("pengeluaranKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.kebutuhan){
+    showToast(
+      "Kebutuhan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.jumlah <= 0){
+    showToast(
+      "Jumlah harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan pengeluaran..."
+  );
+
+
+  callServer(
+    "savePengeluaran",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan pengeluaran.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "Pengeluaran berhasil disimpan."
+      );
+
+
+      resetPengeluaranForm();
+
+      loadPengeluaran();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan pengeluaran.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadPengeluaran(){
+
+  const container =
+    $("pengeluaranTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  callServer(
+    "getPengeluaran",
+    [],
+
+    function(data){
+
+      renderPengeluaran(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pengeluaran.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderPengeluaran(
+  data
+){
+
+  const container =
+    $("pengeluaranTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-wallet2"></i>
+
+        <div class="empty-state-title">
+          Belum ada pengeluaran
+        </div>
+
+      </div>
+
+    `;
+
+    $("pengeluaranTotal")
+      .textContent =
+      "Rp 0";
+
+    return;
+
+  }
+
+
+  const total =
+    data.reduce(
+      (sum,item) =>
+        sum +
+        Number(
+          item.jumlah || 0
+        ),
+      0
+    );
+
+
+  $("pengeluaranTotal")
+    .textContent =
+    formatRupiah(total);
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>Tanggal</th>
+          <th>Nama</th>
+          <th>Kebutuhan</th>
+          <th>Jumlah</th>
+          <th>Pembayaran</th>
+          <th>Kategori</th>
+          <th>Keterangan</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.nama || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kebutuhan || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.jumlah || 0
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPembayaran || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kategori || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   MASTER PABRIK
+========================================================= */
+

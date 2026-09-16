@@ -1,0 +1,495 @@
+﻿function resetHppForm(){
+
+  $("hppTanggal").value =
+    getTodayString();
+
+  $("hppSupplier").value =
+    "";
+
+  $("hppNamaBarang").value =
+    "";
+
+  $("hppWarna").value =
+    "";
+
+  $("hppJumlah").value =
+    "";
+
+  $("hppHarga").value =
+    "";
+
+  $("hppPajak").value =
+    "0";
+
+  $("hppJenisTransaksi").value =
+    "Pembelian";
+
+  $("hppKeterangan").value =
+    "";
+
+}
+
+
+function saveHppForm(){
+
+  const data = {
+
+    tanggal:
+      $("hppTanggal").value,
+
+    supplier:
+      $("hppSupplier")
+        .value
+        .trim(),
+
+    namaBarang:
+      $("hppNamaBarang")
+        .value
+        .trim(),
+
+    warna:
+      $("hppWarna")
+        .value
+        .trim(),
+
+    jumlah:
+      Number(
+        $("hppJumlah").value
+      ) || 0,
+
+    hargaSatuan:
+      Number(
+        $("hppHarga").value
+      ) || 0,
+
+    pajak:
+      Number(
+        $("hppPajak").value
+      ) || 0,
+
+    jenisTransaksi:
+      $("hppJenisTransaksi").value,
+
+    keterangan:
+      $("hppKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal HPP wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.namaBarang){
+    showToast(
+      "Nama barang wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.jumlah <= 0){
+    showToast(
+      "Jumlah harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.hargaSatuan <= 0){
+    showToast(
+      "Harga satuan harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan HPP..."
+  );
+
+
+  callServer(
+    "saveHpp",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan HPP.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "HPP berhasil disimpan."
+      );
+
+
+      resetHppForm();
+
+      loadHpp();
+      loadHppSummary();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadHpp(){
+
+  const container =
+    $("hppTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat HPP...
+      </div>
+    </div>
+
+  `;
+
+
+  callServer(
+    "getHpp",
+    [],
+
+    function(data){
+
+      renderHpp(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderHpp(
+  data
+){
+
+  const container =
+    $("hppTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-calculator"></i>
+
+        <div class="empty-state-title">
+          Belum ada data HPP
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>Tanggal</th>
+          <th>Supplier</th>
+          <th>Nama Barang</th>
+          <th>Warna</th>
+          <th>Jumlah</th>
+          <th>Harga Satuan</th>
+          <th>Pajak</th>
+          <th>Total</th>
+          <th>Transaksi</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.supplier || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaBarang || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.warna || "-"
+                )}
+              </td>
+
+              <td>
+                ${formatNumber(
+                  item.jumlah || 0
+                )}
+              </td>
+
+              <td>
+                ${formatRupiah(
+                  item.hargaSatuan || 0
+                )}
+              </td>
+
+              <td>
+                ${formatRupiah(
+                  item.pajak || 0
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.total || 0
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisTransaksi || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function loadHppSummary(){
+
+  const month =
+    Number(
+      $("hppMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("hppYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getHppSummary",
+    [year,month],
+
+    function(data){
+
+      const summary =
+        data || {};
+
+
+      $("hppTotalPembelian")
+        .textContent =
+        formatRupiah(
+          summary.totalPembelian || 0
+        );
+
+
+      $("hppTotalRetur")
+        .textContent =
+        formatRupiah(
+          summary.totalRetur || 0
+        );
+
+
+      $("hppBersih")
+        .textContent =
+        formatRupiah(
+          summary.hppBersih || 0
+        );
+
+
+      $("hppStatusPengeluaran")
+        .textContent =
+        summary.statusPengeluaran ||
+        "Belum";
+
+    }
+
+  );
+
+}
+
+
+function masukkanHppKePengeluaranForm(){
+
+  const month =
+    Number(
+      $("hppMonth").value
+    );
+
+
+  const year =
+    Number(
+      $("hppYear").value
+    );
+
+
+  if(
+    !confirmAction(
+      `Masukkan HPP bulan ${monthNames[month-1]} ${year} ke Pengeluaran?`
+    )
+  ){
+    return;
+  }
+
+
+  showLoading(
+    "Memasukkan HPP ke Pengeluaran..."
+  );
+
+
+  callServer(
+    "masukkanHppKePengeluaran",
+    [year,month],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal memasukkan HPP.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        `HPP ${formatRupiah(result.jumlah || 0)} berhasil dimasukkan ke Pengeluaran.`
+      );
+
+
+      loadHppSummary();
+      loadPengeluaran();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal memasukkan HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PENGELUARAN
+========================================================= */
+

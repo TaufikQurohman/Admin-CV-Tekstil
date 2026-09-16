@@ -1,0 +1,4 @@
+**/.git/**
+tools/**
+backend/Backend.original.js.txt
+database/archive/**

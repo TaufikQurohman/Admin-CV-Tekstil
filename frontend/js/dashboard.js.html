@@ -1,0 +1,228 @@
+﻿function loadDashboard(){
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  callServer(
+    "getDashboardSummary",
+    [year, month],
+
+    function(data){
+
+      const summary =
+        data || {};
+
+
+      $("dashTotalInvoice")
+        .textContent =
+        summary.totalInvoice || 0;
+
+
+      $("dashTotalPenjualan")
+        .textContent =
+        formatRupiah(
+          summary.totalPenjualan || 0
+        );
+
+
+      $("dashTotalGrey")
+        .textContent =
+        formatRupiah(
+          summary.totalGrey || 0
+        );
+
+
+      $("dashTotalJadi")
+        .textContent =
+        formatRupiah(
+          summary.totalJadi || 0
+        );
+
+
+      $("dashHpp")
+        .textContent =
+        formatRupiah(
+          summary.hpp ||
+          summary.hppBersih ||
+          0
+        );
+
+
+      $("dashPengeluaran")
+        .textContent =
+        formatRupiah(
+          summary.pengeluaran || 0
+        );
+
+
+      $("dashSuratJalan")
+        .textContent =
+        summary.totalSuratJalan ||
+        summary.suratJalan ||
+        0;
+
+
+      $("dashPenjualanBersih")
+        .textContent =
+        formatRupiah(
+          summary.penjualanBersih ||
+          summary.totalPenjualan ||
+          0
+        );
+
+
+      loadDashboardInvoices();
+
+    },
+
+    function(){
+
+      loadDashboardInvoices();
+
+    }
+
+  );
+
+}
+
+
+function loadDashboardInvoices(){
+
+  callServer(
+    "getInvoices",
+    [],
+
+    function(data){
+
+      const invoices =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      const latest =
+        invoices
+          .slice()
+          .reverse()
+          .slice(0,8);
+
+
+      renderDashboardInvoices(
+        latest
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderDashboardInvoices(
+  data
+){
+
+  const container =
+    $("dashboardInvoiceTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-receipt"></i>
+
+        <div class="empty-state-title">
+          Belum ada invoice
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>No Invoice</th>
+          <th>Tanggal</th>
+          <th>Pembeli</th>
+          <th>Jenis</th>
+          <th>Total</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.noInvoice || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${formatDate(
+                  item.tanggal
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaPembeli || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisKain || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.totalInvoice || 0
+                  )}
+                </strong>
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PRINT WINDOW
+========================================================= */
+
