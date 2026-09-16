@@ -1,0 +1,9254 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CV PANDS TEKSTIL - Sistem Administrasi</title>
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet">
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --secondary:#0f172a;
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --border:#e2e8f0;
+  --text:#0f172a;
+  --muted:#64748b;
+  --success:#16a34a;
+  --warning:#d97706;
+  --danger:#dc2626;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  font-size:14px;
+}
+
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:255px;
+  background:
+    linear-gradient(
+      180deg,
+      #0f172a,
+      #111827 55%,
+      #172554
+    );
+  color:#fff;
+  z-index:1000;
+  overflow-y:auto;
+  box-shadow:8px 0 30px rgba(15,23,42,.08);
+}
+
+.brand{
+  padding:24px 20px 22px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.brand-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand-logo{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #1d4ed8
+    );
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:16px;
+}
+
+.brand-title{
+  font-size:15px;
+  font-weight:800;
+}
+
+.brand-subtitle{
+  margin-top:4px;
+  color:#94a3b8;
+  font-size:11px;
+}
+
+.menu-section{
+  padding:18px 12px;
+}
+
+.menu-title{
+  color:#64748b;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  padding:0 10px 8px;
+}
+
+.menu-item{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#cbd5e1;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  margin-bottom:4px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:600;
+  text-align:left;
+  transition:.18s;
+}
+
+.menu-item i{
+  width:20px;
+  text-align:center;
+  font-size:16px;
+}
+
+.menu-item:hover{
+  background:rgba(255,255,255,.07);
+  color:#fff;
+}
+
+.menu-item.active{
+  color:#fff;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37,99,235,.95),
+      rgba(37,99,235,.65)
+    );
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  margin-left:255px;
+  min-height:100vh;
+}
+
+.topbar{
+  height:72px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 30px;
+  position:sticky;
+  top:0;
+  z-index:900;
+}
+
+.page-title{
+  font-size:20px;
+  font-weight:800;
+  margin:0;
+}
+
+.page-subtitle{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.connection-status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:#fff;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  background:#22c55e;
+  border-radius:50%;
+}
+
+.content{
+  padding:28px 30px 40px;
+}
+
+.page-section{
+  display:none;
+}
+
+.page-section.active{
+  display:block;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.section-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:800;
+  margin:0;
+}
+
+.section-description{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.card-custom{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 4px 18px rgba(15,23,42,.035);
+  overflow:hidden;
+}
+
+.card-header-custom{
+  padding:17px 20px;
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.card-header-title{
+  font-size:14px;
+  font-weight:800;
+  margin:0;
+}
+
+.card-body-custom{
+  padding:20px;
+}
+
+/* =========================
+   STAT
+========================= */
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 18px rgba(15,23,42,.035);
+}
+
+.stat-icon{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eff6ff;
+  color:var(--primary);
+  margin-bottom:15px;
+  font-size:18px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.stat-value{
+  font-size:22px;
+  font-weight:800;
+  line-height:1.2;
+}
+
+.stat-note{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:6px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-label{
+  font-size:11px;
+  font-weight:800;
+  color:#334155;
+  margin-bottom:6px;
+}
+
+.form-control,
+.form-select{
+  min-height:40px;
+  border-radius:9px;
+  border:1px solid #dbe2ea;
+  font-size:12px;
+  color:#0f172a;
+  box-shadow:none !important;
+}
+
+.form-control:focus,
+.form-select:focus{
+  border-color:#93c5fd;
+  box-shadow:
+    0 0 0 3px
+    rgba(37,99,235,.08)!important;
+}
+
+textarea.form-control{
+  min-height:80px;
+}
+
+.form-hint{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn{
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  padding:9px 14px;
+}
+
+.btn-primary{
+  background:var(--primary);
+  border-color:var(--primary);
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+  border-color:var(--primary-dark);
+}
+
+.btn-soft{
+  background:#eff6ff;
+  color:var(--primary);
+  border:1px solid #dbeafe;
+}
+
+.btn-soft:hover{
+  background:#dbeafe;
+}
+
+.btn-danger-soft{
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fee2e2;
+}
+
+.btn-print{
+  background:#0f172a;
+  border-color:#0f172a;
+  color:#fff;
+}
+
+.btn-print:hover{
+  background:#1e293b;
+  color:#fff;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+.table-custom{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  margin:0;
+  min-width:760px;
+}
+
+.table-custom th{
+  background:#f8fafc;
+  color:#475569;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+  padding:11px 12px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+
+.table-custom td{
+  padding:10px 12px;
+  border-bottom:1px solid #eef2f7;
+  font-size:11px;
+  vertical-align:middle;
+  background:#fff;
+}
+
+.table-custom tbody tr:hover td{
+  background:#f8fafc;
+}
+
+.invoice-detail-table{
+  min-width:1250px;
+}
+
+.invoice-detail-table th,
+.invoice-detail-table td{
+  padding:8px 7px;
+}
+
+.invoice-detail-table input,
+.invoice-detail-table select{
+  min-height:34px;
+  padding:6px 8px;
+  font-size:11px;
+  border-radius:7px;
+}
+
+.remove-row{
+  width:30px;
+  height:30px;
+  padding:0!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================
+   TOTAL
+========================= */
+
+.total-box{
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fafc
+    );
+  border:1px solid #dbeafe;
+  border-radius:14px;
+  padding:17px 18px;
+}
+
+.total-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:8px;
+  font-size:12px;
+}
+
+.total-row span:first-child{
+  color:var(--muted);
+}
+
+.total-row.total-main{
+  padding-top:9px;
+  border-top:1px solid #dbeafe;
+  margin-top:9px;
+}
+
+.total-row.total-main span{
+  color:#0f172a;
+  font-weight:800;
+  font-size:15px;
+}
+
+.total-row.total-main strong{
+  color:var(--primary);
+  font-size:19px;
+}
+
+/* =========================
+   NUMBER BOX
+========================= */
+
+.invoice-number-box{
+  background:#f8fafc;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:9px 13px;
+  font-size:12px;
+}
+
+.invoice-number-box span{
+  color:var(--muted);
+  font-size:10px;
+  display:block;
+  margin-bottom:2px;
+}
+
+.invoice-number-box strong{
+  font-size:13px;
+}
+
+/* =========================
+   ALERT
+========================= */
+
+.alert-custom{
+  border-radius:12px;
+  border:1px solid;
+  padding:12px 14px;
+  font-size:11px;
+  margin-bottom:15px;
+}
+
+.alert-info-custom{
+  color:#075985;
+  background:#f0f9ff;
+  border-color:#bae6fd;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty-state{
+  text-align:center;
+  padding:45px 20px;
+  color:var(--muted);
+}
+
+.empty-state i{
+  font-size:35px;
+  opacity:.4;
+  margin-bottom:10px;
+}
+
+.empty-state-title{
+  font-size:13px;
+  font-weight:800;
+  color:#475569;
+}
+
+.empty-state-text{
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.32);
+  backdrop-filter:blur(2px);
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.loading-overlay.show{
+  display:flex;
+}
+
+.loading-box{
+  background:#fff;
+  border-radius:14px;
+  padding:22px 25px;
+  min-width:210px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.18);
+}
+
+.loading-spinner{
+  width:30px;
+  height:30px;
+  border:3px solid #dbeafe;
+  border-top-color:var(--primary);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin:0 auto 12px;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.loading-text{
+  font-size:11px;
+  color:#475569;
+  font-weight:700;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast-container-custom{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:6000;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.toast-custom{
+  min-width:280px;
+  max-width:390px;
+  padding:13px 15px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-left:4px solid var(--primary);
+  border-radius:11px;
+  box-shadow:0 15px 40px rgba(15,23,42,.12);
+  font-size:11px;
+}
+
+.toast-custom.success{
+  border-left-color:var(--success);
+}
+
+.toast-custom.error{
+  border-left-color:var(--danger);
+}
+
+/* =========================
+   HISTORY ACTIONS
+========================= */
+
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:74px;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  border:1px solid transparent;
+}
+
+.status-badge.success{
+  background:#ecfdf3;
+  color:#15803d;
+  border-color:#bbf7d0;
+}
+
+.status-badge.warning{
+  background:#fffbeb;
+  color:#b45309;
+  border-color:#fde68a;
+}
+
+.status-badge.danger{
+  background:#fef2f2;
+  color:#b91c1c;
+  border-color:#fecaca;
+}
+
+.status-badge.neutral{
+  background:#f8fafc;
+  color:#475569;
+  border-color:#e2e8f0;
+}
+
+.history-toolbar{
+  background:linear-gradient(135deg,#ffffff,#f8fbff);
+}
+
+.action-icon-btn{
+  width:32px;
+  height:32px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+
+@media(max-width:1100px){
+
+  .stat-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:768px){
+
+  .sidebar{
+    width:220px;
+    transform:translateX(-100%);
+    transition:.2s;
+  }
+
+  .sidebar.mobile-open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+  }
+
+  .topbar{
+    padding:0 16px;
+  }
+
+  .content{
+    padding:20px 15px 30px;
+  }
+
+  .stat-grid{
+    grid-template-columns:1fr;
+  }
+
+  .section-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .connection-status{
+    display:none;
+  }
+
+}
+
+/* =========================
+   PRINT
+========================= */
+
+@media print{
+
+  body{
+    background:#fff;
+  }
+
+  .sidebar,
+  .topbar,
+  .no-print{
+    display:none!important;
+  }
+
+  .main{
+    margin:0!important;
+  }
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+#loginScreen{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at top right, rgba(37,99,235,.16), transparent 35%),
+    linear-gradient(135deg,#0f172a,#172554);
+  padding:20px;
+}
+.login-card{
+  width:min(420px,100%);
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 25px 80px rgba(0,0,0,.28);
+}
+.login-brand{
+  text-align:center;
+  margin-bottom:24px;
+}
+.login-logo{
+  width:58px;
+  height:58px;
+  margin:0 auto 12px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+  color:#fff;
+  font-size:20px;
+  font-weight:900;
+}
+.login-title{
+  font-size:20px;
+  font-weight:800;
+  color:#0f172a;
+}
+.login-subtitle{
+  margin-top:5px;
+  color:#64748b;
+  font-size:12px;
+}
+.login-error{
+  display:none;
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:11px;
+  margin-bottom:14px;
+}
+.login-error.show{display:block}
+.login-btn{
+  width:100%;
+  min-height:42px;
+  margin-top:6px;
+}
+.user-box{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#475569;
+  font-size:11px;
+  font-weight:700;
+}
+.btn-logout{
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fee2e2;
+}
+.btn-logout:hover{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+
+/* =========================
+   V3 METER UI
+========================= */
+.unit-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#eef4ff;
+  color:#2457c5;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+.stat-card{
+  position:relative;
+  overflow:hidden;
+}
+.stat-card::after{
+  content:"";
+  position:absolute;
+  right:-28px;
+  bottom:-28px;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:rgba(37,99,235,.05);
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-logo">PT</div>
+      <div class="login-title">CV PANDS TEKSTIL</div>
+      <div class="login-subtitle">Sistem Administrasi</div>
+    </div>
+
+    <div id="loginError" class="login-error"></div>
+
+    <form onsubmit="event.preventDefault(); doLogin();">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="loginUsername"
+          autocomplete="username"
+          placeholder="Masukkan username"
+          required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="loginPassword"
+          autocomplete="current-password"
+          placeholder="Masukkan password"
+          required>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary login-btn"
+        id="loginButton">
+        <i class="bi bi-box-arrow-in-right me-1"></i>
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <div class="brand-wrap">
+
+      <div class="brand-logo">
+        PT
+      </div>
+
+      <div>
+
+        <div class="brand-title">
+          CV PANDS TEKSTIL
+        </div>
+
+        <div class="brand-subtitle">
+          Sistem Administrasi
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="menu-section">
+
+    <div class="menu-title">
+      Menu Utama
+    </div>
+
+    <button
+      class="menu-item active"
+      onclick="showSection('dashboard',this)">
+
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Dashboard</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('invoice',this)">
+
+      <i class="bi bi-receipt-cutoff"></i>
+      <span>Invoice</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pembukuanGrey',this)">
+
+      <i class="bi bi-box-seam"></i>
+      <span>Pembukuan Grey</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pembukuanJadi',this)">
+
+      <i class="bi bi-boxes"></i>
+      <span>Pembukuan Kain Jadi</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('hpp',this)">
+
+      <i class="bi bi-calculator"></i>
+      <span>HPP</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('pengeluaran',this)">
+
+      <i class="bi bi-wallet2"></i>
+      <span>Pengeluaran</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('suratJalan',this)">
+
+      <i class="bi bi-truck"></i>
+      <span>Surat Jalan</span>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showSection('masterPabrik',this)">
+
+      <i class="bi bi-building"></i>
+      <span>Master Pabrik</span>
+
+    </button>
+
+
+
+
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+  <header class="topbar">
+
+    <div>
+
+      <h1
+        class="page-title"
+        id="pageTitle">
+
+        Dashboard
+
+      </h1>
+
+      <div
+        class="page-subtitle"
+        id="pageSubtitle">
+
+        Ringkasan aktivitas CV Pands Tekstil
+
+      </div>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+      <div class="connection-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+          Terhubung
+        </span>
+
+      </div>
+
+      <div class="user-box">
+        <i class="bi bi-person-circle"></i>
+        <span id="loggedInUser">admin</span>
+      </div>
+
+      <button
+        class="btn btn-soft"
+        onclick="backupDatabaseForm()"
+        title="Backup Database">
+        <i class="bi bi-cloud-arrow-down"></i>
+      </button>
+
+      <button
+        class="btn btn-soft"
+        onclick="refreshCurrentSection()"
+        title="Refresh">
+
+        <i class="bi bi-arrow-clockwise"></i>
+
+      </button>
+
+      <button
+        class="btn btn-logout"
+        onclick="doLogout()"
+        title="Logout">
+
+        <i class="bi bi-box-arrow-right me-1"></i>
+        Logout
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="content">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+  id="dashboard"
+  class="page-section active">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Dashboard
+      </h2>
+
+      <p class="section-description">
+        Ringkasan transaksi dan aktivitas administrasi.
+      </p>
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="showSectionById('invoice')">
+
+      <i class="bi bi-plus-lg me-1"></i>
+
+      Buat Invoice
+
+    </button>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL INVOICE
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalInvoice">
+
+        0
+
+      </div>
+
+      <div class="stat-note">
+        Semua invoice tercatat
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash-stack"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN BULAN INI
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalPenjualan">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Grey + Kain Jadi
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN GREY
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalGrey">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Bulan berjalan
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-boxes"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN KAIN JADI
+      </div>
+
+      <div
+        class="stat-value"
+        id="dashTotalJadi">
+
+        Rp 0
+
+      </div>
+
+      <div class="stat-note">
+        Bulan berjalan
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-lg-8">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Invoice Terbaru
+          </h3>
+
+          <button
+            class="btn btn-soft btn-sm"
+            onclick="showSectionById('invoice')">
+
+            Lihat Semua
+
+          </button>
+
+        </div>
+
+
+        <div
+          class="table-wrap"
+          id="dashboardInvoiceTable">
+
+          <div class="empty-state">
+
+            <div class="loading-spinner"></div>
+
+            <div class="empty-state-title">
+              Memuat data...
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Ringkasan
+          </h3>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+          <div class="total-row">
+
+            <span>
+              HPP Bulan Ini
+            </span>
+
+            <strong id="dashHpp">
+              Rp 0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row">
+
+            <span>
+              Pengeluaran
+            </span>
+
+            <strong id="dashPengeluaran">
+              Rp 0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row">
+
+            <span>
+              Surat Jalan
+            </span>
+
+            <strong id="dashSuratJalan">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row total-main">
+
+            <span>
+              Penjualan Bersih
+            </span>
+
+            <strong id="dashPenjualanBersih">
+              Rp 0
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     INVOICE
+===================================================== -->
+
+<section
+  id="invoice"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Invoice
+      </h2>
+
+      <p class="section-description">
+        Pembuatan invoice penjualan kain Grey maupun Kain Jadi.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Informasi Invoice
+      </h3>
+
+
+      <div class="invoice-number-box">
+
+        <span>
+          Nomor Invoice
+        </span>
+
+        <strong id="invoiceNumberPreview">
+          Otomatis
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="invoiceTanggal">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Nama Pembeli
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoicePembeli"
+            placeholder="Ketik nama pembeli">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kategori Penjualan
+          </label>
+
+          <select
+            class="form-select"
+            id="invoiceJenisKain">
+
+            <option value="">
+              Pilih jenis penjualan
+            </option>
+
+            <option value="Grey">
+              Grey
+            </option>
+
+            <option value="Kain Jadi">
+              Kain Jadi
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            No PO
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceNoPo"
+            placeholder="Nomor PO / Pesanan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Alamat Pembeli
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceAlamat"
+            placeholder="Alamat pembeli">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Jenis Pembayaran
+          </label>
+
+          <select
+            class="form-select"
+            id="invoicePembayaran">
+
+            <option value="">
+              Pilih pembayaran
+            </option>
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="Transfer">
+              Transfer
+            </option>
+
+            <option value="QRIS">
+              QRIS
+            </option>
+
+            <option value="Debit">
+              Debit
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            DP
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="invoiceDp"
+            value="0"
+            min="0"
+            step="1"
+            oninput="calculateInvoiceTotal()">
+
+        </div>
+
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <textarea
+            class="form-control"
+            id="invoiceKeterangan"
+            placeholder="Keterangan tambahan jika ada"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <div>
+
+        <h3 class="card-header-title">
+          Detail Barang
+        </h3>
+
+        <div class="form-hint">
+          Qty dapat diisi dalam Kg atau Meter.           Printing Gambar, dan jenis lainnya ditulis pada kolom Jenis Kain.
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary btn-sm"
+        onclick="addInvoiceRow()">
+
+        <i class="bi bi-plus-lg me-1"></i>
+
+        Tambah Baris
+
+      </button>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table
+        class="table-custom invoice-detail-table">
+
+        <thead>
+
+          <tr>
+
+            <th style="width:45px">
+              No
+            </th>
+<th style="min-width:160px">
+              Jenis Kain
+            </th>
+
+            <th style="min-width:110px">
+              Warna
+            </th>
+
+            <th style="min-width:100px">
+              No Roll
+            </th>
+
+            <th style="min-width:90px">
+              Qty
+            </th>
+
+            <th style="min-width:95px">
+              Satuan
+            </th>
+
+            <th style="min-width:125px">
+              Harga Satuan
+            </th>
+
+            <th style="min-width:140px">
+              Total
+            </th>
+
+            <th style="width:55px"></th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="invoiceDetailBody">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-lg-7">
+
+      <div class="card-custom">
+
+        <div class="card-header-custom">
+
+          <h3 class="card-header-title">
+            Catatan Invoice
+          </h3>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+          <div
+            class="alert-custom alert-info-custom mb-0">
+
+            <strong>
+              NO REK. AN / FANDS TEKSTIL
+            </strong>
+
+            <br>
+
+            2095937505 BNI
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-5">
+
+      <div class="total-box">
+
+        <div class="total-row">
+
+          <span>
+            Subtotal
+          </span>
+
+          <strong id="invoiceSubtotal">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row">
+
+          <span>
+            DP
+          </span>
+
+          <strong id="invoiceDpDisplay">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row total-main">
+
+          <span>
+            Total Invoice
+          </span>
+
+          <strong id="invoiceTotal">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="total-row">
+
+          <span>
+            Sisa Tagihan
+          </span>
+
+          <strong id="invoiceSisa">
+            Rp 0
+          </strong>
+
+        </div>
+
+
+        <div class="d-flex justify-content-end gap-2 mt-3 flex-wrap">
+
+          <button
+            type="button"
+            class="btn btn-soft"
+            onclick="resetInvoiceForm()">
+
+            <i class="bi bi-file-earmark-plus me-1"></i>
+
+            Buat Baru
+
+          </button>
+
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="saveInvoiceForm()">
+
+            <i class="bi bi-database-check me-1"></i>
+
+            <span id="invoiceSaveButtonText">Simpan ke Database</span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="btn btn-print"
+            onclick="printCurrentInvoice()">
+
+            <i class="bi bi-printer me-1"></i>
+
+            Cetak
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mt-4">
+
+    <div class="card-header-custom">
+
+      <div>
+        <h3 class="card-header-title">
+          Riwayat Invoice
+        </h3>
+
+        <div class="form-hint">
+          Cari, filter, cetak ulang, edit, atau batalkan invoice.
+        </div>
+      </div>
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadInvoiceHistory()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-body-custom border-bottom">
+
+      <div class="row g-2 align-items-end">
+
+        <div class="col-lg-5">
+          <label class="form-label">Cari Invoice</label>
+          <input
+            type="text"
+            class="form-control"
+            id="invoiceHistorySearch"
+            placeholder="No invoice / nama pembeli / No PO"
+            oninput="loadInvoiceHistory()">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Bulan</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryMonth"
+            onchange="loadInvoiceHistory()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Tahun</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryYear"
+            onchange="loadInvoiceHistory()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Status</label>
+          <select
+            class="form-select"
+            id="invoiceHistoryStatus"
+            onchange="loadInvoiceHistory()">
+            <option value="">Semua Status</option>
+            <option value="Lunas">Lunas</option>
+            <option value="DP">DP</option>
+            <option value="Belum Lunas">Belum Lunas</option>
+            <option value="Dibatalkan">Dibatalkan</option>
+          </select>
+        </div>
+
+        <div class="col-md-1">
+          <button
+            class="btn btn-soft w-100"
+            onclick="clearInvoiceHistoryFilter()"
+            title="Reset filter">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrap"
+      id="invoiceHistoryTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMBUKUAN GREY
+===================================================== -->
+
+<section
+  id="pembukuanGrey"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pembukuan Kain Grey
+      </h2>
+
+      <p class="section-description">
+        Data penjualan kain Grey yang berasal dari invoice.
+      </p>
+
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+      <select
+        class="form-select"
+        id="greyMonth"
+        style="width:130px"
+        onchange="loadPembukuanGrey()">
+      </select>
+
+
+      <select
+        class="form-select"
+        id="greyYear"
+        style="width:100px"
+        onchange="loadPembukuanGrey()">
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TRANSAKSI
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalTransaksi">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-rulers"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL METER
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalMeter">
+        0 M
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-speedometer2"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL KG
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalKg">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="greyTotalPenjualan">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pembukuan Grey
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPembukuanGrey()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="greyTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMBUKUAN KAIN JADI
+===================================================== -->
+
+<section
+  id="pembukuanJadi"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pembukuan Kain Jadi
+      </h2>
+
+      <p class="section-description">
+        Data penjualan kain yang sudah jadi.
+      </p>
+
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+      <select
+        class="form-select"
+        id="jadiMonth"
+        style="width:130px"
+        onchange="loadPembukuanJadi()">
+      </select>
+
+
+      <select
+        class="form-select"
+        id="jadiYear"
+        style="width:100px"
+        onchange="loadPembukuanJadi()">
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-receipt"></i>
+      </div>
+
+      <div class="stat-label">
+        TRANSAKSI
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalTransaksi">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-rulers"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL METER
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalMeter">
+        0 M
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-speedometer2"></i>
+      </div>
+
+      <div class="stat-label">
+        TOTAL KG
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalKg">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-cash"></i>
+      </div>
+
+      <div class="stat-label">
+        PENJUALAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="jadiTotalPenjualan">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pembukuan Kain Jadi
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPembukuanJadi()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="jadiTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     HPP
+===================================================== -->
+
+<section
+  id="hpp"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        HPP
+      </h2>
+
+      <p class="section-description">
+        Pencatatan pembelian dan retur untuk perhitungan HPP.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Input HPP
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="hppTanggal">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Supplier
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppSupplier"
+            placeholder="Nama supplier">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Nama Barang
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppNamaBarang"
+            placeholder="Nama barang">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Warna
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppWarna"
+            placeholder="Warna">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jumlah
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppJumlah"
+            min="0"
+            step="0.01"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Harga Satuan
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppHarga"
+            min="0"
+            step="1"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Pajak
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="hppPajak"
+            value="0"
+            min="0"
+            step="1">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jenis Transaksi
+          </label>
+
+          <select
+            class="form-select"
+            id="hppJenisTransaksi">
+
+            <option value="Pembelian">
+              Pembelian
+            </option>
+
+            <option value="Retur">
+              Retur
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="hppKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-md-2 d-flex align-items-end">
+
+          <button
+            class="btn btn-primary w-100"
+            onclick="saveHppForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan HPP
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        PEMBELIAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppTotalPembelian">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        RETUR
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppTotalRetur">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        HPP BERSIH
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppBersih">
+        Rp 0
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        STATUS PENGELUARAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="hppStatusPengeluaran"
+        style="font-size:15px">
+        Belum
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <div>
+
+        <h3 class="card-header-title">
+          HPP Bulanan
+        </h3>
+
+        <div class="form-hint">
+          HPP bersih dimasukkan ke Pengeluaran satu kali setiap bulan.
+        </div>
+
+      </div>
+
+
+      <div class="d-flex gap-2">
+
+        <select
+          class="form-select"
+          id="hppMonth"
+          style="width:130px"
+          onchange="loadHppSummary()">
+        </select>
+
+
+        <select
+          class="form-select"
+          id="hppYear"
+          style="width:100px"
+          onchange="loadHppSummary()">
+        </select>
+
+
+        <button
+          class="btn btn-primary"
+          onclick="masukkanHppKePengeluaranForm()">
+
+          Masukkan ke Pengeluaran
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data HPP
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadHpp()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="hppTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PENGELUARAN
+===================================================== -->
+
+<section
+  id="pengeluaran"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Pengeluaran
+      </h2>
+
+      <p class="section-description">
+        Pencatatan pengeluaran operasional perusahaan.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Input Pengeluaran
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="pengeluaranTanggal">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Nama
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranNama"
+            placeholder="Nama">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kebutuhan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranKebutuhan"
+            placeholder="Kebutuhan">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Jumlah
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            id="pengeluaranJumlah"
+            min="0"
+            step="1"
+            placeholder="0">
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Jenis Pembayaran
+          </label>
+
+          <select
+            class="form-select"
+            id="pengeluaranPembayaran">
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="Transfer">
+              Transfer
+            </option>
+
+            <option value="QRIS">
+              QRIS
+            </option>
+
+            <option value="Debit">
+              Debit
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Kategori
+          </label>
+
+          <select
+            class="form-select"
+            id="pengeluaranKategori">
+
+            <option value="HPP">
+              HPP
+            </option>
+
+            <option value="Celup">
+              Celup
+            </option>
+
+            <option value="Bensin">
+              Bensin
+            </option>
+
+            <option value="Operasional">
+              Operasional
+            </option>
+
+            <option value="Lainnya">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-7">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="pengeluaranKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-md-2 d-flex align-items-end">
+
+          <button
+            class="btn btn-primary w-100"
+            onclick="savePengeluaranForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        TOTAL PENGELUARAN
+      </div>
+
+      <div
+        class="stat-value"
+        id="pengeluaranTotal">
+        Rp 0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Data Pengeluaran
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadPengeluaran()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="pengeluaranTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     SURAT JALAN
+===================================================== -->
+
+<section
+  id="suratJalan"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Surat Jalan
+      </h2>
+
+      <p class="section-description">
+        Surat jalan internal pengiriman kain ke pabrik celup.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Informasi Pengiriman
+      </h3>
+
+
+      <div class="invoice-number-box">
+
+        <span>
+          Nomor Surat Jalan
+        </span>
+
+        <strong id="suratJalanNumberPreview">
+          Otomatis
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Tanggal
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            id="sjTanggal">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Pabrik
+          </label>
+
+          <select
+            class="form-select"
+            id="sjPabrik"
+            onchange="onPabrikSelected()">
+
+            <option value="">
+              Pilih pabrik
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Alamat Pabrik
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjAlamat"
+            readonly>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            No PO
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjNoPo"
+            placeholder="No PO / Pesanan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Kendaraan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjKendaraan"
+            placeholder="Nomor kendaraan">
+
+        </div>
+
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Nama Supir
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="sjSupir"
+            placeholder="Nama supir">
+
+        </div>
+
+
+        <input type="hidden" id="sjJenisPengiriman" value="Pengiriman Kain Celup">
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <textarea
+            class="form-control"
+            id="sjKeterangan"
+            placeholder="Keterangan pengiriman"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Detail Barang
+      </h3>
+
+
+      <button
+        class="btn btn-primary btn-sm"
+        onclick="addSuratJalanRow()">
+
+        <i class="bi bi-plus-lg me-1"></i>
+
+        Tambah Baris
+
+      </button>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table class="table-custom">
+
+        <thead>
+
+          <tr>
+
+            <th>No</th>
+            <th>Jenis Kain</th>
+            <th>Warna</th>
+            <th>No Roll</th>
+            <th>Berat Kg</th>
+            <th>Keterangan</th>
+            <th></th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="suratJalanDetailBody">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-md-7">
+
+      <div class="card-custom">
+
+        <div class="card-body-custom">
+
+          <div class="total-row">
+
+            <span>
+              Total Roll
+            </span>
+
+            <strong id="sjTotalRoll">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="total-row total-main">
+
+            <span>
+              Total Kg
+            </span>
+
+            <strong id="sjTotalKg">
+              0 Kg
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-md-5">
+
+      <div class="total-box">
+
+        <div class="d-flex justify-content-end gap-2 flex-wrap">
+
+          <button
+            class="btn btn-soft"
+            onclick="resetSuratJalanForm()">
+
+            <i class="bi bi-file-earmark-plus me-1"></i>
+
+            Buat Baru
+
+          </button>
+
+
+          <button
+            class="btn btn-primary"
+            onclick="saveSuratJalanForm()">
+
+            <i class="bi bi-database-check me-1"></i>
+
+            Simpan ke Database
+
+          </button>
+
+
+          <button
+            class="btn btn-print"
+            onclick="printCurrentSuratJalan()">
+
+            <i class="bi bi-printer me-1"></i>
+
+            Cetak
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mt-4">
+
+    <div class="card-header-custom">
+
+      <div>
+        <h3 class="card-header-title">
+          Riwayat Surat Jalan
+        </h3>
+
+        <div class="form-hint">
+          Cari dan cetak ulang surat jalan yang sudah tersimpan.
+        </div>
+      </div>
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadSuratJalan()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-body-custom border-bottom">
+
+      <div class="row g-2 align-items-end">
+
+        <div class="col-lg-6">
+          <label class="form-label">Cari Surat Jalan</label>
+          <input
+            type="text"
+            class="form-control"
+            id="sjHistorySearch"
+            placeholder="No surat jalan / pabrik / kendaraan / supir"
+            oninput="loadSuratJalan()">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Bulan</label>
+          <select
+            class="form-select"
+            id="sjHistoryMonth"
+            onchange="loadSuratJalan()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Tahun</label>
+          <select
+            class="form-select"
+            id="sjHistoryYear"
+            onchange="loadSuratJalan()">
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button
+            class="btn btn-soft w-100"
+            onclick="clearSuratJalanHistoryFilter()">
+            <i class="bi bi-x-lg me-1"></i>
+            Reset
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrap"
+      id="suratJalanTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MASTER PABRIK
+===================================================== -->
+
+<section
+  id="masterPabrik"
+  class="page-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2 class="section-title">
+        Master Pabrik
+      </h2>
+
+      <p class="section-description">
+        Daftar pabrik tujuan pengiriman kain.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom mb-3">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Tambah Pabrik
+      </h3>
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Nama Pabrik
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikNama"
+            placeholder="Nama pabrik">
+
+        </div>
+
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Alamat
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikAlamat"
+            placeholder="Alamat pabrik">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Kontak
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikKontak"
+            placeholder="No. HP / Telp">
+
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Keterangan
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="masterPabrikKeterangan"
+            placeholder="Keterangan">
+
+        </div>
+
+
+        <div class="col-12">
+
+          <button
+            class="btn btn-primary"
+            onclick="saveMasterPabrikForm()">
+
+            <i class="bi bi-save me-1"></i>
+
+            Simpan Pabrik
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-custom">
+
+    <div class="card-header-custom">
+
+      <h3 class="card-header-title">
+        Daftar Pabrik
+      </h3>
+
+
+      <button
+        class="btn btn-soft btn-sm"
+        onclick="loadMasterPabrik()">
+
+        <i class="bi bi-arrow-clockwise me-1"></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      id="masterPabrikTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+
+  <section
+    id="logAktivitas"
+    class="page-section">
+
+    <div class="section-header">
+
+      <div>
+        <h2 class="section-title">
+          Log Aktivitas
+        </h2>
+
+        <p class="section-description">
+          Riwayat aktivitas pengguna dan sistem.
+        </p>
+      </div>
+
+      <button
+        class="btn btn-soft"
+        onclick="loadActivityLog()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="card-custom">
+
+      <div class="card-header-custom">
+
+        <div>
+          <h3 class="card-header-title">
+            Riwayat Aktivitas
+          </h3>
+
+          <div class="form-hint">
+            Aktivitas penting seperti membuat, mengedit, membatalkan, mencetak, dan backup.
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        class="table-wrap"
+        id="activityLogTable">
+      </div>
+
+    </div>
+
+  </section>
+
+
+  </div>
+
+</main>
+
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div
+  class="loading-overlay"
+  id="loadingOverlay">
+
+  <div class="loading-box">
+
+    <div class="loading-spinner"></div>
+
+    <div
+      class="loading-text"
+      id="loadingText">
+
+      Memproses...
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast-container-custom"
+  id="toastContainer">
+</div>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+const APP_NAME = "CV PANDS TEKSTIL";
+
+let invoiceRowCounter = 0;
+let suratJalanRowCounter = 0;
+
+let lastInvoiceId = "";
+let lastInvoiceNumber = "";
+let editingInvoiceId = "";
+
+let lastSuratJalanId = "";
+let lastSuratJalanNumber = "";
+
+let masterPabrikData = [];
+
+let authToken = sessionStorage.getItem("pands_auth_token") || "";
+let authUsername = sessionStorage.getItem("pands_auth_username") || "";
+
+function setLoginState(token, username){
+  authToken = token || "";
+  authUsername = username || "admin";
+
+  if(authToken){
+    sessionStorage.setItem("pands_auth_token", authToken);
+    sessionStorage.setItem("pands_auth_username", authUsername);
+  }else{
+    sessionStorage.removeItem("pands_auth_token");
+    sessionStorage.removeItem("pands_auth_username");
+  }
+}
+
+function showLoginScreen(message=""){
+  const screen = $("loginScreen");
+  if(screen) screen.style.display = "flex";
+
+  if(message){
+    const box = $("loginError");
+    if(box){
+      box.textContent = message;
+      box.classList.add("show");
+    }
+  }
+}
+
+function hideLoginScreen(){
+  const screen = $("loginScreen");
+  if(screen) screen.style.display = "none";
+
+  const box = $("loginError");
+  if(box){
+    box.textContent = "";
+    box.classList.remove("show");
+  }
+
+  if($("loggedInUser")){
+    $("loggedInUser").textContent = authUsername || "admin";
+  }
+}
+
+function doLogin(){
+  const username = ($("loginUsername")?.value || "").trim();
+  const password = $("loginPassword")?.value || "";
+  const button = $("loginButton");
+  const errorBox = $("loginError");
+
+  if(errorBox){
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+  }
+
+  if(!username || !password){
+    showLoginScreen("Username dan password wajib diisi.");
+    return;
+  }
+
+  if(button){
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memeriksa...';
+  }
+
+  google.script.run
+    .withSuccessHandler(function(result){
+      if(button){
+        button.disabled = false;
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+      }
+
+      if(!result || !result.success || !result.token){
+        showLoginScreen("Login gagal.");
+        return;
+      }
+
+      setLoginState(result.token, result.username || username);
+      hideLoginScreen();
+      initAuthenticatedApp();
+    })
+    .withFailureHandler(function(error){
+      if(button){
+        button.disabled = false;
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+      }
+
+      showLoginScreen(error?.message || "Username atau password salah.");
+    })
+    .login(username, password);
+}
+
+function doLogout(){
+  const token = authToken;
+
+  if(!confirmAction("Logout dari aplikasi?")){
+    return;
+  }
+
+  // Hapus sesi lokal terlebih dahulu agar aplikasi langsung kembali ke login.
+  setLoginState("", "");
+
+  if($('loginPassword')){
+    $('loginPassword').value = "";
+  }
+
+  if($('loginUsername')){
+    $('loginUsername').value = "";
+  }
+
+  // Tampilkan halaman login tanpa perlu refresh browser.
+  showLoginScreen();
+
+  if(token){
+    google.script.run
+      .withFailureHandler(function(){
+        // Login screen tetap ditampilkan walaupun server gagal menerima logout.
+      })
+      .logout(token);
+  }
+}
+
+function checkExistingLogin(){
+  if(!authToken){
+    showLoginScreen();
+    return;
+  }
+
+  google.script.run
+    .withSuccessHandler(function(result){
+      if(result && result.loggedIn){
+        authUsername = result.username || authUsername || "admin";
+        sessionStorage.setItem("pands_auth_username", authUsername);
+        hideLoginScreen();
+        initAuthenticatedApp();
+      }else{
+        setLoginState("", "");
+        showLoginScreen();
+      }
+    })
+    .withFailureHandler(function(){
+      setLoginState("", "");
+      showLoginScreen();
+    })
+    .checkLogin(authToken);
+}
+
+function initAuthenticatedApp(){
+  setupMonthYearSelectors();
+  populateHistoryFilters();
+
+  if($("invoiceTanggal")) $("invoiceTanggal").value = getTodayString();
+  if($("hppTanggal")) $("hppTanggal").value = getTodayString();
+  if($("pengeluaranTanggal")) $("pengeluaranTanggal").value = getTodayString();
+  if($("sjTanggal")) $("sjTanggal").value = getTodayString();
+
+  if($("invoiceDetailBody") && !$("invoiceDetailBody").children.length){
+    addInvoiceRow();
+  }
+
+  if($("suratJalanBody") && !$("suratJalanBody").children.length){
+    addSuratJalanRow();
+  }
+
+  loadDashboard();
+  loadMasterPabrik();
+}
+
+
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function formatRupiah(value){
+
+  const number =
+    Number(value) || 0;
+
+  return new Intl.NumberFormat(
+    "id-ID",
+    {
+      style:"currency",
+      currency:"IDR",
+      maximumFractionDigits:0
+    }
+  ).format(number);
+
+}
+
+
+function formatNumber(value){
+
+  const number =
+    Number(value) || 0;
+
+  return new Intl.NumberFormat(
+    "id-ID",
+    {
+      maximumFractionDigits:2
+    }
+  ).format(number);
+
+}
+
+
+function parseClientDate(value){
+
+  if(!value){
+    return null;
+  }
+
+  if(value instanceof Date){
+    return isNaN(value.getTime()) ? null : value;
+  }
+
+  const text = String(value).trim();
+
+  // Format yyyy-MM-dd dari backend
+  const iso = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(iso){
+    const d = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // Format dd/MM/yyyy bila ada
+  const indo = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(indo){
+    const d = new Date(Number(indo[3]), Number(indo[2]) - 1, Number(indo[1]));
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  const d = new Date(text);
+  return isNaN(d.getTime()) ? null : d;
+
+}
+
+
+function formatDate(value){
+
+  if(!value){
+    return "-";
+  }
+
+  const text =
+    String(value);
+
+  if(/^\d{4}-\d{2}-\d{2}$/.test(text)){
+
+    const parts =
+      text.split("-");
+
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+  }
+
+  const date =
+    new Date(value);
+
+  if(isNaN(date.getTime())){
+    return text;
+  }
+
+  return new Intl.DateTimeFormat(
+    "id-ID"
+  ).format(date);
+
+}
+
+
+function getTodayString(){
+
+  const now =
+    new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth()+1
+    ).padStart(2,"0");
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2,"0");
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+
+}
+
+
+function showLoading(message){
+
+  $("loadingText").textContent =
+    message || "Memproses...";
+
+  $("loadingOverlay")
+    .classList
+    .add("show");
+
+}
+
+
+function hideLoading(){
+
+  $("loadingOverlay")
+    .classList
+    .remove("show");
+
+}
+
+
+function showToast(
+  message,
+  type="success"
+){
+
+  const container =
+    $("toastContainer");
+
+  const toast =
+    document.createElement("div");
+
+  toast.className =
+    `toast-custom ${type}`;
+
+  toast.textContent =
+    message;
+
+  container.appendChild(toast);
+
+  setTimeout(
+    ()=>{
+      toast.remove();
+    },
+    4000
+  );
+
+}
+
+
+function confirmAction(message){
+
+  return window.confirm(
+    message
+  );
+
+}
+
+
+/* =========================================================
+   SERVER CALL
+========================================================= */
+
+function callServer(
+  functionName,
+  args=[],
+  success,
+  failure
+){
+
+  let runner =
+    google.script.run
+      .withSuccessHandler(
+        function(result){
+
+          if(typeof success === "function"){
+            success(result);
+          }
+
+        }
+      )
+      .withFailureHandler(
+        function(error){
+
+          if(typeof failure === "function"){
+            failure(error);
+          }else{
+
+            showToast(
+              error?.message ||
+              "Terjadi kesalahan.",
+              "error"
+            );
+
+          }
+
+        }
+      );
+
+  if(!authToken){
+    showLoginScreen("Sesi login tidak ditemukan. Silakan login.");
+    return;
+  }
+
+  const argsWithAuth = [
+    ...(Array.isArray(args) ? args : []),
+    authToken
+  ];
+
+  runner[functionName](...argsWithAuth);
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+const sectionTitles = {
+
+  dashboard:[
+    "Dashboard",
+    "Ringkasan aktivitas CV Pands Tekstil"
+  ],
+
+  invoice:[
+    "Invoice",
+    "Pembuatan invoice penjualan"
+  ],
+
+  pembukuanGrey:[
+    "Pembukuan Kain Grey",
+    "Pencatatan penjualan kain Grey"
+  ],
+
+  pembukuanJadi:[
+    "Pembukuan Kain Jadi",
+    "Pencatatan penjualan Kain Jadi"
+  ],
+
+  hpp:[
+    "HPP",
+    "Pembelian dan retur"
+  ],
+
+  pengeluaran:[
+    "Pengeluaran",
+    "Pencatatan pengeluaran perusahaan"
+  ],
+
+  suratJalan:[
+    "Surat Jalan",
+    "Pengiriman kain ke pabrik"
+  ],
+
+  masterPabrik:[
+    "Master Pabrik",
+    "Daftar pabrik tujuan"
+  ],
+
+  logAktivitas:[
+    "Log Aktivitas",
+    "Riwayat aktivitas pengguna dan sistem"
+  ]
+
+};
+
+
+function showSection(
+  sectionId,
+  button
+){
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach(
+      section =>
+        section.classList.remove("active")
+    );
+
+
+  const section =
+    $(sectionId);
+
+  if(section){
+    section.classList.add("active");
+  }
+
+
+  document
+    .querySelectorAll(".menu-item")
+    .forEach(
+      item =>
+        item.classList.remove("active")
+    );
+
+
+  if(button){
+    button.classList.add("active");
+  }
+
+
+  const title =
+    sectionTitles[sectionId];
+
+  if(title){
+
+    $("pageTitle").textContent =
+      title[0];
+
+    $("pageSubtitle").textContent =
+      title[1];
+
+  }
+
+
+  if(sectionId === "dashboard"){
+    loadDashboard();
+  }
+
+  if(sectionId === "invoice"){
+    loadInvoiceHistory();
+  }
+
+  if(sectionId === "pembukuanGrey"){
+    loadPembukuanGrey();
+  }
+
+  if(sectionId === "pembukuanJadi"){
+    loadPembukuanJadi();
+  }
+
+  if(sectionId === "hpp"){
+    loadHpp();
+    loadHppSummary();
+  }
+
+  if(sectionId === "pengeluaran"){
+    loadPengeluaran();
+  }
+
+  if(sectionId === "suratJalan"){
+    loadMasterPabrik();
+    loadSuratJalan();
+  }
+
+  if(sectionId === "masterPabrik"){
+    loadMasterPabrik();
+  }
+
+  if(sectionId === "logAktivitas"){
+    loadActivityLog();
+  }
+
+
+}
+
+
+function showSectionById(
+  sectionId
+){
+
+  const button =
+    document.querySelector(
+      `.menu-item[onclick*="'${sectionId}'"]`
+    );
+
+  showSection(
+    sectionId,
+    button
+  );
+
+}
+
+
+function refreshCurrentSection(){
+
+  const active =
+    document.querySelector(
+      ".page-section.active"
+    );
+
+  if(!active){
+    return;
+  }
+
+  const id =
+    active.id;
+
+  if(id === "dashboard"){
+    loadDashboard();
+  }
+
+  else if(id === "invoice"){
+    loadInvoiceHistory();
+  }
+
+  else if(id === "pembukuanGrey"){
+    loadPembukuanGrey();
+  }
+
+  else if(id === "pembukuanJadi"){
+    loadPembukuanJadi();
+  }
+
+  else if(id === "hpp"){
+    loadHpp();
+    loadHppSummary();
+  }
+
+  else if(id === "pengeluaran"){
+    loadPengeluaran();
+  }
+
+  else if(id === "suratJalan"){
+    loadSuratJalan();
+  }
+
+  else if(id === "masterPabrik"){
+    loadMasterPabrik();
+  }
+
+
+}
+
+
+/* =========================================================
+   MONTH / YEAR
+========================================================= */
+
+const monthNames = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember"
+];
+
+
+function setupMonthYearSelectors(){
+
+  const selects = [
+    ["greyMonth","greyYear"],
+    ["jadiMonth","jadiYear"],
+    ["hppMonth","hppYear"]
+  ];
+
+  const year =
+    new Date().getFullYear();
+
+  selects.forEach(
+    pair => {
+
+      const month =
+        $(pair[0]);
+
+      const yearSelect =
+        $(pair[1]);
+
+      if(!month || !yearSelect){
+        return;
+      }
+
+
+      month.innerHTML =
+        monthNames
+          .map(
+            (name,index) =>
+              `<option value="${index+1}">
+                ${name}
+              </option>`
+          )
+          .join("");
+
+
+      for(
+        let y=year-2;
+        y<=year+2;
+        y++
+      ){
+
+        yearSelect.innerHTML +=
+          `<option value="${y}">
+            ${y}
+          </option>`;
+
+      }
+
+
+      month.value =
+        new Date().getMonth()+1;
+
+      yearSelect.value =
+        year;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   INVOICE ROW
+========================================================= */
+
+function addInvoiceRow(
+  data={}
+){
+
+  const tbody =
+    $("invoiceDetailBody");
+
+  invoiceRowCounter++;
+
+  const tr =
+    document.createElement("tr");
+
+  tr.dataset.row =
+    invoiceRowCounter;
+
+
+  tr.innerHTML = `
+
+    <td class="text-center">
+      ${invoiceRowCounter}
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control invoice-jenis-kain-detail"
+        value="${escapeHtml(data.jenisKain || data.namaKain || "")}"
+        placeholder="Baby Terry / Waffle / Rib / dll"
+        required>
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control invoice-warna"
+        value="${escapeHtml(data.warna || "")}"
+        placeholder="Warna">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control invoice-no-roll"
+        value="${escapeHtml(data.noRoll || "")}"
+        placeholder="No roll">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="number"
+        class="form-control invoice-qty"
+        value="${data.qty || ""}"
+        min="0"
+        step="0.01"
+        placeholder="0"
+        oninput="calculateInvoiceTotal()">
+
+    </td>
+
+
+    <td>
+
+      <select
+        class="form-select invoice-satuan"
+        onchange="calculateInvoiceTotal()">
+
+        <option
+          value="Kg"
+          ${data.satuan === "Kg" || !data.satuan ? "selected" : ""}>
+
+          Kg
+
+        </option>
+
+        <option
+          value="Meter"
+          ${data.satuan === "Meter" ? "selected" : ""}>
+
+          Meter
+
+        </option>
+
+      </select>
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="number"
+        class="form-control invoice-harga"
+        value="${data.hargaSatuan || ""}"
+        min="0"
+        step="1"
+        placeholder="0"
+        oninput="calculateInvoiceTotal()">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control invoice-jumlah"
+        value="${formatRupiah(data.jumlah || 0)}"
+        readonly>
+
+    </td>
+
+
+    <td class="text-center">
+
+      <button
+        type="button"
+        class="btn btn-danger-soft remove-row"
+        onclick="removeInvoiceRow(this)">
+
+        <i class="bi bi-trash"></i>
+
+      </button>
+
+    </td>
+
+  `;
+
+
+  tbody.appendChild(tr);
+
+  calculateInvoiceTotal();
+
+}
+
+
+function removeInvoiceRow(
+  button
+){
+
+  button
+    .closest("tr")
+    ?.remove();
+
+  renumberInvoiceRows();
+
+  calculateInvoiceTotal();
+
+}
+
+
+function renumberInvoiceRows(){
+
+  const rows =
+    document.querySelectorAll(
+      "#invoiceDetailBody tr"
+    );
+
+  rows.forEach(
+    (row,index) => {
+
+      row
+        .querySelector("td")
+        .textContent =
+        index+1;
+
+    }
+  );
+
+  invoiceRowCounter =
+    rows.length;
+
+}
+
+
+/* =========================================================
+   INVOICE CALCULATION
+========================================================= */
+
+function calculateInvoiceTotal(){
+
+  const rows =
+    document.querySelectorAll(
+      "#invoiceDetailBody tr"
+    );
+
+  let total = 0;
+
+
+  rows.forEach(
+    row => {
+
+      const qty =
+        Number(
+          row.querySelector(
+            ".invoice-qty"
+          )?.value
+        ) || 0;
+
+
+      const harga =
+        Number(
+          row.querySelector(
+            ".invoice-harga"
+          )?.value
+        ) || 0;
+
+
+      const jumlah =
+        qty * harga;
+
+
+      total += jumlah;
+
+
+      const output =
+        row.querySelector(
+          ".invoice-jumlah"
+        );
+
+      if(output){
+        output.value =
+          formatRupiah(jumlah);
+      }
+
+    }
+  );
+
+
+  const dp =
+    Number(
+      $("invoiceDp").value
+    ) || 0;
+
+
+  const sisa =
+    Math.max(
+      total-dp,
+      0
+    );
+
+
+  $("invoiceSubtotal")
+    .textContent =
+    formatRupiah(total);
+
+
+  $("invoiceTotal")
+    .textContent =
+    formatRupiah(total);
+
+
+  $("invoiceDpDisplay")
+    .textContent =
+    formatRupiah(dp);
+
+
+  $("invoiceSisa")
+    .textContent =
+    formatRupiah(sisa);
+
+}
+
+
+/* =========================================================
+   COLLECT INVOICE
+========================================================= */
+
+function collectInvoiceData(){
+
+  const rows =
+    document.querySelectorAll(
+      "#invoiceDetailBody tr"
+    );
+
+  const detail = [];
+
+
+  rows.forEach(
+    (row,index) => {
+
+      const qty =
+        Number(
+          row.querySelector(
+            ".invoice-qty"
+          )?.value
+        ) || 0;
+
+
+      const hargaSatuan =
+        Number(
+          row.querySelector(
+            ".invoice-harga"
+          )?.value
+        ) || 0;
+
+
+      detail.push({
+
+        no:index+1,
+
+        jenisKain:
+          row.querySelector(
+            ".invoice-jenis-kain-detail"
+          )?.value
+          .trim() || "",
+
+        warna:
+          row.querySelector(
+            ".invoice-warna"
+          )?.value
+          .trim() || "",
+
+        noRoll:
+          row.querySelector(
+            ".invoice-no-roll"
+          )?.value
+          .trim() || "",
+
+        qty,
+
+        satuan:
+          row.querySelector(
+            ".invoice-satuan"
+          )?.value || "Kg",
+
+        hargaSatuan,
+
+        jumlah:
+          qty * hargaSatuan
+
+      });
+
+    }
+  );
+
+
+  const totalInvoice =
+    detail.reduce(
+      (sum,item) =>
+        sum +
+        Number(item.jumlah || 0),
+      0
+    );
+
+
+  const dp =
+    Number(
+      $("invoiceDp").value
+    ) || 0;
+
+
+  return {
+
+    tanggal:
+      $("invoiceTanggal").value,
+
+    namaPembeli:
+      $("invoicePembeli")
+        .value
+        .trim(),
+
+    alamatPembeli:
+      $("invoiceAlamat")
+        .value
+        .trim(),
+
+    noPo:
+      $("invoiceNoPo")
+        .value
+        .trim(),
+
+    jenisKain:
+      $("invoiceJenisKain")
+        .value,
+
+    jenisPembayaran:
+      $("invoicePembayaran")
+        .value,
+
+    dp,
+
+    sisaTagihan:
+      Math.max(
+        totalInvoice-dp,
+        0
+      ),
+
+    keterangan:
+      $("invoiceKeterangan")
+        .value
+        .trim(),
+
+    totalInvoice,
+
+    detail
+
+  };
+
+}
+
+
+/* =========================================================
+   SAVE INVOICE
+========================================================= */
+
+function saveInvoiceForm(){
+
+  const payload =
+    collectInvoiceData();
+
+  if(!payload.tanggal){
+    showToast(
+      "Tanggal invoice wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+  if(!payload.namaPembeli){
+    showToast(
+      "Nama pembeli wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+  if(!payload.jenisKain){
+    showToast(
+      "Jenis penjualan wajib dipilih.",
+      "error"
+    );
+    return;
+  }
+
+  if(!payload.jenisPembayaran){
+    showToast(
+      "Jenis pembayaran wajib dipilih.",
+      "error"
+    );
+    return;
+  }
+
+  if(!payload.detail.length){
+    showToast(
+      "Detail invoice belum ada.",
+      "error"
+    );
+    return;
+  }
+
+  const invalid =
+    payload.detail.some(
+      item =>
+        !item.jenisKain ||
+        item.qty <= 0 ||
+        item.hargaSatuan <= 0
+    );
+
+  if(invalid){
+
+    showToast(
+      "Jenis kain, Qty, dan harga satuan wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const isEdit =
+    !!editingInvoiceId;
+
+  if(
+    !confirmAction(
+      isEdit
+        ? "Simpan perubahan invoice?"
+        : "Simpan invoice ke database?"
+    )
+  ){
+    return;
+  }
+
+  showLoading(
+    isEdit
+      ? "Menyimpan perubahan..."
+      : "Menyimpan invoice..."
+  );
+
+  callServer(
+    isEdit
+      ? "updateInvoice"
+      : "saveInvoice",
+
+    isEdit
+      ? [{...payload, idInvoice:editingInvoiceId}]
+      : [payload],
+
+    function(result){
+
+      hideLoading();
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan invoice.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      lastInvoiceId =
+        result.idInvoice || lastInvoiceId;
+
+      lastInvoiceNumber =
+        result.noInvoice || lastInvoiceNumber;
+
+      $("invoiceNumberPreview")
+        .textContent =
+        result.noInvoice ||
+        "Tersimpan";
+
+      showToast(
+        isEdit
+          ? `Invoice ${result.noInvoice || ""} berhasil diperbarui.`
+          : `Invoice ${result.noInvoice || ""} berhasil disimpan ke database.`
+      );
+
+      editingInvoiceId =
+        result.idInvoice ||
+        editingInvoiceId;
+
+      updateInvoiceEditModeUI();
+
+      loadInvoiceHistory();
+      loadPembukuanGrey();
+      loadPembukuanJadi();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan invoice.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   RESET INVOICE
+========================================================= */
+
+function resetInvoiceForm(){
+
+  $("invoiceTanggal").value =
+    getTodayString();
+
+  $("invoicePembeli").value =
+    "";
+
+  $("invoiceAlamat").value =
+    "";
+
+  $("invoiceNoPo").value =
+    "";
+
+  $("invoiceJenisKain").value =
+    "";
+
+  $("invoicePembayaran").value =
+    "";
+
+  $("invoiceDp").value =
+    "0";
+
+  $("invoiceKeterangan").value =
+    "";
+
+  $("invoiceDetailBody")
+    .innerHTML =
+    "";
+
+  invoiceRowCounter =
+    0;
+
+  lastInvoiceId =
+    "";
+
+  lastInvoiceNumber =
+    "";
+
+  editingInvoiceId =
+    "";
+
+  updateInvoiceEditModeUI();
+
+  $("invoiceNumberPreview")
+    .textContent =
+    "Otomatis";
+
+  addInvoiceRow();
+
+  calculateInvoiceTotal();
+
+}
+
+
+/* =========================================================
+   INVOICE HISTORY
+========================================================= */
+
+function populateHistoryFilters(){
+
+  const year =
+    new Date().getFullYear();
+
+  const month =
+    new Date().getMonth()+1;
+
+  const monthSelects = [
+    $("invoiceHistoryMonth"),
+    $("sjHistoryMonth")
+  ];
+
+  monthSelects.forEach(select => {
+
+    if(!select || select.options.length){
+      return;
+    }
+
+    select.innerHTML =
+      `<option value="">Semua Bulan</option>` +
+      monthNames.map(
+        (name,index) =>
+          `<option value="${index+1}">${name}</option>`
+      ).join("");
+
+  });
+
+  const yearSelects = [
+    $("invoiceHistoryYear"),
+    $("sjHistoryYear")
+  ];
+
+  yearSelects.forEach(select => {
+
+    if(!select || select.options.length){
+      return;
+    }
+
+    let options =
+      `<option value="">Semua Tahun</option>`;
+
+    for(
+      let y=year-2;
+      y<=year+2;
+      y++
+    ){
+      options +=
+        `<option value="${y}">${y}</option>`;
+    }
+
+    select.innerHTML =
+      options;
+
+  });
+
+  if($("invoiceHistoryMonth") && !$("invoiceHistoryMonth").value){
+    $("invoiceHistoryMonth").value = month;
+  }
+
+  if($("invoiceHistoryYear") && !$("invoiceHistoryYear").value){
+    $("invoiceHistoryYear").value = year;
+  }
+
+  if($("sjHistoryMonth") && !$("sjHistoryMonth").value){
+    $("sjHistoryMonth").value = month;
+  }
+
+  if($("sjHistoryYear") && !$("sjHistoryYear").value){
+    $("sjHistoryYear").value = year;
+  }
+
+}
+
+
+function loadInvoiceHistory(){
+
+  const container =
+    $("invoiceHistoryTable");
+
+  if(!container){
+    return;
+  }
+
+  populateHistoryFilters();
+
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat invoice...
+      </div>
+    </div>
+  `;
+
+  const keyword =
+    $("invoiceHistorySearch")?.value || "";
+
+  const year =
+    $("invoiceHistoryYear")?.value || "";
+
+  const month =
+    $("invoiceHistoryMonth")?.value || "";
+
+  const status =
+    $("invoiceHistoryStatus")?.value || "";
+
+  callServer(
+    "searchInvoices",
+    [keyword, year, month, status],
+
+    function(data){
+
+      renderInvoiceHistory(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      container.innerHTML =
+        `<div class="empty-state">
+          <div class="empty-state-title">
+            Gagal mengambil data invoice
+          </div>
+        </div>`;
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil invoice.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function clearInvoiceHistoryFilter(){
+
+  if($("invoiceHistorySearch")){
+    $("invoiceHistorySearch").value = "";
+  }
+
+  if($("invoiceHistoryStatus")){
+    $("invoiceHistoryStatus").value = "";
+  }
+
+  if($("invoiceHistoryMonth")){
+    $("invoiceHistoryMonth").value = new Date().getMonth()+1;
+  }
+
+  if($("invoiceHistoryYear")){
+    $("invoiceHistoryYear").value = new Date().getFullYear();
+  }
+
+  loadInvoiceHistory();
+
+}
+
+
+function getInvoiceStatusBadge(status){
+
+  const value =
+    String(status || "")
+      .trim();
+
+  let cls =
+    "status-badge";
+
+  if(value === "Lunas"){
+    cls += " success";
+  }else if(value === "DP"){
+    cls += " warning";
+  }else if(value === "Dibatalkan"){
+    cls += " danger";
+  }else{
+    cls += " neutral";
+  }
+
+  return `
+    <span class="${cls}">
+      ${escapeHtml(value || "-")}
+    </span>
+  `;
+
+}
+
+
+function renderInvoiceHistory(
+  data
+){
+
+  const container =
+    $("invoiceHistoryTable");
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-receipt"></i>
+        <div class="empty-state-title">
+          Tidak ada invoice
+        </div>
+        <div class="empty-state-text">
+          Coba ubah kata pencarian atau filter.
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>No Invoice</th>
+          <th>Tanggal</th>
+          <th>Pembeli</th>
+          <th>Jenis</th>
+          <th>Pembayaran</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th style="min-width:180px">Aksi</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.noInvoice || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaPembeli || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPenjualan ||
+                  item.jenisKain ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPembayaran || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.totalInvoice || 0
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${getInvoiceStatusBadge(item.status)}
+              </td>
+
+              <td>
+
+                <div class="d-flex gap-1 flex-wrap">
+
+                  <button
+                    class="btn btn-soft btn-sm"
+                    onclick="printInvoiceFromHistory('${escapeHtml(item.idInvoice)}')"
+                    title="Cetak ulang">
+                    <i class="bi bi-printer"></i>
+                  </button>
+
+                  ${
+                    item.status !== "Dibatalkan"
+                    ? `
+                      <button
+                        class="btn btn-soft btn-sm"
+                        onclick="editInvoiceFromHistory('${escapeHtml(item.idInvoice)}')"
+                        title="Edit invoice">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+
+                      <button
+                        class="btn btn-danger-soft btn-sm"
+                        onclick="voidInvoiceFromHistory('${escapeHtml(item.idInvoice)}')"
+                        title="Batalkan invoice">
+                        <i class="bi bi-slash-circle"></i>
+                      </button>
+                    `
+                    : ""
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function printInvoiceFromHistory(
+  idInvoice
+){
+
+  if(!idInvoice){
+    showToast(
+      "ID invoice tidak ditemukan.",
+      "error"
+    );
+    return;
+  }
+
+  showLoading(
+    "Menyiapkan invoice..."
+  );
+
+  callServer(
+    "getInvoiceById",
+    [idInvoice],
+
+    function(data){
+
+      hideLoading();
+
+      if(!data){
+        showToast(
+          "Invoice tidak ditemukan.",
+          "error"
+        );
+        return;
+      }
+
+      openPrintWindow(
+        buildInvoicePrint(
+          data,
+          data.detail || []
+        )
+      );
+
+      callServer(
+        "recordPrintActivity",
+        ["Invoice", idInvoice],
+        function(){},
+        function(){}
+      );
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil invoice.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function editInvoiceFromHistory(
+  idInvoice
+){
+
+  if(!idInvoice){
+    showToast(
+      "ID invoice tidak ditemukan.",
+      "error"
+    );
+    return;
+  }
+
+  showLoading(
+    "Memuat invoice untuk diedit..."
+  );
+
+  callServer(
+    "getInvoiceById",
+    [idInvoice],
+
+    function(data){
+
+      hideLoading();
+
+      if(!data){
+        showToast(
+          "Invoice tidak ditemukan.",
+          "error"
+        );
+        return;
+      }
+
+      editingInvoiceId =
+        data.idInvoice || idInvoice;
+
+      lastInvoiceId =
+        data.idInvoice || idInvoice;
+
+      lastInvoiceNumber =
+        data.noInvoice || "";
+
+      $("invoiceTanggal").value =
+        data.tanggal || getTodayString();
+
+      $("invoicePembeli").value =
+        data.namaPembeli || "";
+
+      $("invoiceAlamat").value =
+        data.alamatPembeli || "";
+
+      $("invoiceNoPo").value =
+        data.noPO || "";
+
+      $("invoiceJenisKain").value =
+        data.jenisPenjualan ||
+        data.jenisKain ||
+        "";
+
+      $("invoicePembayaran").value =
+        data.jenisPembayaran || "";
+
+      $("invoiceDp").value =
+        data.dp || 0;
+
+      $("invoiceKeterangan").value =
+        data.keterangan || "";
+
+      $("invoiceNumberPreview").textContent =
+        data.noInvoice || "Otomatis";
+
+      $("invoiceDetailBody").innerHTML = "";
+      invoiceRowCounter = 0;
+
+      (data.detail || []).forEach(
+        item =>
+          addInvoiceRow(item)
+      );
+
+      if(!(data.detail || []).length){
+        addInvoiceRow();
+      }
+
+      calculateInvoiceTotal();
+      updateInvoiceEditModeUI();
+
+      showSectionById("invoice");
+
+      showToast(
+        `Invoice ${data.noInvoice || ""} siap diedit.`
+      );
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal memuat invoice.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function updateInvoiceEditModeUI(){
+
+  const label =
+    $("invoiceSaveButtonText");
+
+  if(label){
+    label.textContent =
+      editingInvoiceId
+        ? "Simpan Perubahan"
+        : "Simpan ke Database";
+  }
+
+}
+
+
+function voidInvoiceFromHistory(
+  idInvoice
+){
+
+  if(!idInvoice){
+    return;
+  }
+
+  const ok =
+    confirmAction(
+      "Yakin ingin membatalkan invoice ini? Data akan tetap disimpan sebagai riwayat."
+    );
+
+  if(!ok){
+    return;
+  }
+
+  showLoading(
+    "Membatalkan invoice..."
+  );
+
+  callServer(
+    "voidInvoice",
+    [idInvoice],
+
+    function(result){
+
+      hideLoading();
+
+      if(!result || result.success === false){
+
+        showToast(
+          result?.message ||
+          "Gagal membatalkan invoice.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      showToast(
+        `Invoice ${result.noInvoice || ""} berhasil dibatalkan.`
+      );
+
+      loadInvoiceHistory();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal membatalkan invoice.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PRINT INVOICE
+========================================================= */
+
+function printCurrentInvoice(){
+
+  const data =
+    collectInvoiceData();
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal invoice wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.namaPembeli){
+    showToast(
+      "Nama pembeli wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.detail.length){
+    showToast(
+      "Detail invoice belum ada.",
+      "error"
+    );
+    return;
+  }
+
+
+  const header = {
+
+    noInvoice:
+      lastInvoiceNumber ||
+      "INVOICE-BARU",
+
+    tanggal:
+      data.tanggal,
+
+    namaPembeli:
+      data.namaPembeli,
+
+    alamatPembeli:
+      data.alamatPembeli,
+
+    noPo:
+      data.noPo,
+
+    jenisKain:
+      data.jenisKain,
+
+    jenisPembayaran:
+      data.jenisPembayaran,
+
+    dp:
+      data.dp,
+
+    sisaTagihan:
+      data.sisaTagihan,
+
+    keterangan:
+      data.keterangan,
+
+    totalInvoice:
+      data.totalInvoice
+
+  };
+
+
+  openPrintWindow(
+    buildInvoicePrint(
+      header,
+      data.detail
+    )
+  );
+
+  if(lastInvoiceId){
+    callServer(
+      "recordPrintActivity",
+      ["Invoice", lastInvoiceId],
+      function(){},
+      function(){}
+    );
+  }
+
+}
+
+
+/* =========================================================
+   INVOICE PRINT HTML
+========================================================= */
+
+function buildInvoicePrint(
+  h,
+  details
+){
+
+  h = h || {};
+  details = Array.isArray(details) ? details : [];
+
+  const total =
+    Number(h.totalInvoice) ||
+    details.reduce(
+      (sum,item) => sum + Number(item.jumlah || 0),
+      0
+    );
+
+  const dp = Number(h.dp) || 0;
+  const sisa = Math.max(total - dp, 0);
+
+  const tanggalCetak = new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }
+  ).format(new Date());
+
+  const rows = details.map((item,index) => `
+    <tr>
+      <td class="center">${index + 1}</td>
+      <td>${escapeHtml(item.jenisKain || "-")}</td>
+      <td>${escapeHtml(item.warna || "-")}</td>
+      <td>${escapeHtml(item.noRoll || "-")}</td>
+      <td class="right">${formatNumber(item.qty ?? item.berat ?? 0)}</td>
+      <td class="center">${escapeHtml(item.satuan || "-")}</td>
+      <td class="right">${formatRupiah(item.hargaSatuan || 0)}</td>
+      <td class="right">${formatRupiah(item.jumlah || 0)}</td>
+    </tr>
+  `).join("");
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Invoice - ${escapeHtml(h.namaPembeli || "CV PANDS TEKSTIL")}</title>
+<style>
+@page{
+  size:A5 portrait;
+  margin:7mm 8mm;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:8.5px;
+  color:#111;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:1.2px solid #111;
+  padding-bottom:5px;
+  margin-bottom:7px;
+}
+
+.company{
+  font-size:14px;
+  font-weight:bold;
+  line-height:1.1;
+}
+
+.invoice-title{
+  text-align:right;
+}
+
+.invoice-title strong{
+  display:block;
+  font-size:14px;
+  line-height:1.05;
+}
+
+.print-date{
+  display:block;
+  margin-top:2px;
+  font-size:8px;
+  line-height:1.15;
+}
+
+.info{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  margin-bottom:7px;
+}
+
+.info > tbody > tr > td{
+  width:50%;
+  padding:0;
+  vertical-align:top;
+}
+
+.info-half{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.info-half td{
+  padding:2px 0;
+  vertical-align:top;
+  line-height:1.25;
+}
+
+.info-half .label{
+  width:86px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.info-half .sep{
+  width:8px;
+  text-align:center;
+}
+
+.info-right{
+  padding-left:18px !important;
+}
+
+.detail{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.detail th,
+.detail td{
+  border:1px solid #222;
+  padding:3px 2.5px;
+  line-height:1.15;
+}
+
+.detail th{
+  font-size:7.2px;
+  background:#f3f3f3;
+  white-space:nowrap;
+}
+
+.detail td{
+  font-size:8px;
+}
+
+.detail th:nth-child(1), .detail td:nth-child(1){width:6%;}
+.detail th:nth-child(2), .detail td:nth-child(2){width:24%;}
+.detail th:nth-child(3), .detail td:nth-child(3){width:13%;}
+.detail th:nth-child(4), .detail td:nth-child(4){width:11%;}
+.detail th:nth-child(5), .detail td:nth-child(5){width:8%;}
+.detail th:nth-child(6), .detail td:nth-child(6){width:8%;}
+.detail th:nth-child(7), .detail td:nth-child(7){width:14%;}
+.detail th:nth-child(8), .detail td:nth-child(8){width:16%;}
+
+.center{text-align:center;}
+.right{text-align:right;}
+
+.bottom-area{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:7px;
+}
+
+.bank{
+  flex:1;
+  padding-top:2px;
+  font-size:7.6px;
+  line-height:1.35;
+  font-weight:bold;
+}
+
+.summary{
+  width:44%;
+  margin-left:auto;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:1.5px 0;
+  line-height:1.15;
+}
+
+.summary-row span:first-child{ white-space:nowrap; }
+
+.summary-row.total{
+  border-top:1px solid #111;
+  margin-top:2px;
+  padding-top:3px;
+  font-size:9px;
+  font-weight:bold;
+}
+
+.note{
+  margin-top:5px;
+  padding-top:4px;
+  border-top:1px solid #222;
+  font-size:7.5px;
+  line-height:1.3;
+}
+
+.signature{
+  width:100%;
+  margin-top:14px;
+  border-collapse:collapse;
+  page-break-inside:avoid;
+}
+
+.signature td{
+  width:50%;
+  text-align:center;
+  vertical-align:top;
+  font-size:8px;
+}
+
+.signature-space{height:30px;}
+.signature-name{font-weight:bold; margin-top:1px;}
+
+.footer{
+  margin-top:5px;
+  text-align:center;
+  font-size:6.5px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="company">CV PANDS TEKSTIL</div>
+  </div>
+
+  <div class="invoice-title">
+    <strong>INVOICE</strong>
+    <span class="print-date">Dicetak pada ${escapeHtml(tanggalCetak)}</span>
+  </div>
+</div>
+
+<table class="info">
+  <tr>
+    <td>
+      <table class="info-half">
+        <tr>
+          <td class="label">Kepada / Pembeli</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(h.namaPembeli || "-")}</td>
+        </tr>
+        <tr>
+          <td class="label">Alamat Pembeli</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(h.alamatPembeli || "-")}</td>
+        </tr>
+        <tr>
+          <td class="label">No PO / Pesanan</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(h.noPo || "-")}</td>
+        </tr>
+      </table>
+    </td>
+
+    <td class="info-right">
+      <table class="info-half">
+        <tr>
+          <td class="label">Tanggal Invoice</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(formatDate(h.tanggal) || "-")}</td>
+        </tr>
+        <tr>
+          <td class="label">Jenis Kain</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(h.jenisKain || "-")}</td>
+        </tr>
+        <tr>
+          <td class="label">Pembayaran</td>
+          <td class="sep">:</td>
+          <td>${escapeHtml(h.jenisPembayaran || "-")}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<table class="detail">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Jenis Kain</th>
+      <th>Warna</th>
+      <th>No Roll</th>
+      <th>Qty</th>
+      <th>Satuan</th>
+      <th>Harga Satuan</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>${rows}</tbody>
+</table>
+
+<div class="bottom-area">
+  <div class="bank">
+    NO REK. AN / FANDS TEKSTIL<br>
+    2095937505 BNI
+  </div>
+
+  <div class="summary">
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <strong>${formatRupiah(total)}</strong>
+    </div>
+    <div class="summary-row">
+      <span>DP</span>
+      <strong>${formatRupiah(dp)}</strong>
+    </div>
+    <div class="summary-row total">
+      <span>TOTAL INVOICE</span>
+      <strong>${formatRupiah(total)}</strong>
+    </div>
+    <div class="summary-row">
+      <span>Sisa Tagihan</span>
+      <strong>${formatRupiah(sisa)}</strong>
+    </div>
+  </div>
+</div>
+
+${h.keterangan ? `
+  <div class="note">
+    Keterangan: ${escapeHtml(h.keterangan)}
+  </div>
+` : ""}
+
+<table class="signature">
+  <tr>
+    <td>
+      Pembeli
+      <div class="signature-space"></div>
+      <div class="signature-name">( ${escapeHtml(h.namaPembeli || "-")} )</div>
+    </td>
+    <td>
+      Penjual
+      <div class="signature-space"></div>
+      <div class="signature-name">( CV PANDS TEKSTIL )</div>
+    </td>
+  </tr>
+</table>
+
+<div class="footer">Terima kasih atas kepercayaan Anda.</div>
+
+</body>
+</html>
+  `;
+}
+
+/* =========================================================
+   SURAT JALAN
+========================================================= */
+
+function resetSuratJalanForm(){
+
+  $("sjTanggal").value =
+    getTodayString();
+
+  $("sjPabrik").value =
+    "";
+
+  $("sjAlamat").value =
+    "";
+
+  $("sjNoPo").value =
+    "";
+
+  $("sjKendaraan").value =
+    "";
+
+  $("sjSupir").value =
+    "";
+
+  $("sjJenisPengiriman").value =
+    "Pengiriman Kain Celup";
+
+  $("sjKeterangan").value =
+    "";
+
+  $("suratJalanDetailBody")
+    .innerHTML =
+    "";
+
+  suratJalanRowCounter =
+    0;
+
+  lastSuratJalanId =
+    "";
+
+  lastSuratJalanNumber =
+    "";
+
+  $("suratJalanNumberPreview")
+    .textContent =
+    "Otomatis";
+
+  addSuratJalanRow();
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function addSuratJalanRow(
+  data={}
+){
+
+  const tbody =
+    $("suratJalanDetailBody");
+
+  suratJalanRowCounter++;
+
+
+  const tr =
+    document.createElement("tr");
+
+
+  tr.innerHTML = `
+
+    <td class="text-center">
+      ${suratJalanRowCounter}
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-jenis-kain"
+        value="${escapeHtml(data.jenisKain || "")}"
+        placeholder="Jenis kain">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-warna"
+        value="${escapeHtml(data.warna || "")}"
+        placeholder="Warna">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-no-roll"
+        value="${escapeHtml(data.noRoll || "")}"
+        placeholder="No roll">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="number"
+        class="form-control sj-berat"
+        value="${data.beratKg || ""}"
+        min="0"
+        step="0.01"
+        placeholder="0"
+        oninput="calculateSuratJalanTotal()">
+
+    </td>
+
+
+    <td>
+
+      <input
+        type="text"
+        class="form-control sj-keterangan"
+        value="${escapeHtml(data.keterangan || "")}"
+        placeholder="Keterangan">
+
+    </td>
+
+
+    <td>
+
+      <button
+        type="button"
+        class="btn btn-danger-soft remove-row"
+        onclick="removeSuratJalanRow(this)">
+
+        <i class="bi bi-trash"></i>
+
+      </button>
+
+    </td>
+
+  `;
+
+
+  tbody.appendChild(tr);
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function removeSuratJalanRow(
+  button
+){
+
+  button
+    .closest("tr")
+    ?.remove();
+
+  renumberSuratJalanRows();
+
+  calculateSuratJalanTotal();
+
+}
+
+
+function renumberSuratJalanRows(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+  rows.forEach(
+    (row,index) => {
+
+      row
+        .querySelector("td")
+        .textContent =
+        index+1;
+
+    }
+  );
+
+  suratJalanRowCounter =
+    rows.length;
+
+}
+
+
+function calculateSuratJalanTotal(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+
+  let totalKg = 0;
+
+
+  rows.forEach(
+    row => {
+
+      totalKg +=
+        Number(
+          row.querySelector(
+            ".sj-berat"
+          )?.value
+        ) || 0;
+
+    }
+  );
+
+
+  $("sjTotalRoll")
+    .textContent =
+    rows.length;
+
+
+  $("sjTotalKg")
+    .textContent =
+    `${formatNumber(totalKg)} Kg`;
+
+}
+
+
+/* =========================================================
+   PABRIK
+========================================================= */
+
+function onPabrikSelected(){
+
+  const id =
+    $("sjPabrik").value;
+
+
+  const pabrik =
+    masterPabrikData.find(
+      item =>
+        String(
+          item.idPabrik || ""
+        ) === String(id)
+    );
+
+
+  $("sjAlamat").value =
+    pabrik?.alamat || "";
+
+}
+
+
+function loadMasterPabrik(){
+
+  callServer(
+    "getMasterPabrik",
+    [],
+
+    function(data){
+
+      masterPabrikData =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      populatePabrikSelect(
+        masterPabrikData
+      );
+
+
+      renderMasterPabrik(
+        masterPabrikData
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil master pabrik.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function populatePabrikSelect(
+  data
+){
+
+  const select =
+    $("sjPabrik");
+
+
+  if(!select){
+    return;
+  }
+
+
+  const current =
+    select.value;
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Pilih pabrik
+    </option>
+
+    ${
+      data.map(
+        item => `
+
+          <option
+            value="${escapeHtml(
+              item.idPabrik || ""
+            )}">
+
+            ${escapeHtml(
+              item.namaPabrik || ""
+            )}
+
+          </option>
+
+        `
+      ).join("")
+    }
+
+  `;
+
+
+  if(current){
+    select.value =
+      current;
+  }
+
+}
+
+
+/* =========================================================
+   SURAT JALAN COLLECT
+========================================================= */
+
+function collectSuratJalanData(){
+
+  const rows =
+    document.querySelectorAll(
+      "#suratJalanDetailBody tr"
+    );
+
+
+  const detail = [];
+
+
+  rows.forEach(
+    (row,index) => {
+
+      detail.push({
+
+        no:index+1,
+
+        jenisKain:
+          row.querySelector(
+            ".sj-jenis-kain"
+          )?.value
+          .trim() || "",
+
+        warna:
+          row.querySelector(
+            ".sj-warna"
+          )?.value
+          .trim() || "",
+
+        noRoll:
+          row.querySelector(
+            ".sj-no-roll"
+          )?.value
+          .trim() || "",
+
+        beratKg:
+          Number(
+            row.querySelector(
+              ".sj-berat"
+            )?.value
+          ) || 0,
+
+        keterangan:
+          row.querySelector(
+            ".sj-keterangan"
+          )?.value
+          .trim() || ""
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    tanggal:
+      $("sjTanggal").value,
+
+    idPabrik:
+      $("sjPabrik").value,
+
+    alamat:
+      $("sjAlamat").value,
+
+    noPo:
+      $("sjNoPo").value.trim(),
+
+    kendaraan:
+      $("sjKendaraan")
+        .value
+        .trim(),
+
+    namaSupir:
+      $("sjSupir")
+        .value
+        .trim(),
+
+    jenisPengiriman:
+      $("sjJenisPengiriman")
+        .value,
+
+    keterangan:
+      $("sjKeterangan")
+        .value
+        .trim(),
+
+    detail
+
+  };
+
+}
+
+
+/* =========================================================
+   SAVE SURAT JALAN
+========================================================= */
+
+function saveSuratJalanForm(){
+
+  const payload =
+    collectSuratJalanData();
+
+
+  if(!payload.tanggal){
+    showToast(
+      "Tanggal surat jalan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.idPabrik){
+    showToast(
+      "Pabrik tujuan wajib dipilih.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.kendaraan){
+    showToast(
+      "Kendaraan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.namaSupir){
+    showToast(
+      "Nama supir wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!payload.detail.length){
+    showToast(
+      "Detail barang belum ada.",
+      "error"
+    );
+    return;
+  }
+
+
+  const invalid =
+    payload.detail.some(
+      item =>
+        item.beratKg <= 0
+    );
+
+
+  if(invalid){
+
+    showToast(
+      "Berat setiap roll wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !confirmAction(
+      "Simpan surat jalan ke database?"
+    )
+  ){
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan surat jalan..."
+  );
+
+
+  callServer(
+    "saveSuratJalan",
+    [payload],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan surat jalan.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      lastSuratJalanId =
+        result.idSuratJalan ||
+        "";
+
+
+      lastSuratJalanNumber =
+        result.noSuratJalan ||
+        "";
+
+
+      $("suratJalanNumberPreview")
+        .textContent =
+        result.noSuratJalan ||
+        "Tersimpan";
+
+
+      showToast(
+        `Surat jalan ${result.noSuratJalan || ""} berhasil disimpan ke database.`
+      );
+
+
+      // FORM TIDAK DI-RESET
+
+      loadSuratJalan();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   SURAT JALAN HISTORY
+========================================================= */
+
+function loadSuratJalan(){
+
+  const container =
+    $("suratJalanTable");
+
+  if(!container){
+    return;
+  }
+
+  populateHistoryFilters();
+
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat surat jalan...
+      </div>
+    </div>
+  `;
+
+  const keyword =
+    $("sjHistorySearch")?.value || "";
+
+  const year =
+    $("sjHistoryYear")?.value || "";
+
+  const month =
+    $("sjHistoryMonth")?.value || "";
+
+  callServer(
+    "searchSuratJalan",
+    [keyword, year, month],
+
+    function(data){
+
+      renderSuratJalan(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      container.innerHTML =
+        `<div class="empty-state">
+          <div class="empty-state-title">
+            Gagal mengambil surat jalan
+          </div>
+        </div>`;
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function clearSuratJalanHistoryFilter(){
+
+  if($("sjHistorySearch")){
+    $("sjHistorySearch").value = "";
+  }
+
+  if($("sjHistoryMonth")){
+    $("sjHistoryMonth").value =
+      new Date().getMonth()+1;
+  }
+
+  if($("sjHistoryYear")){
+    $("sjHistoryYear").value =
+      new Date().getFullYear();
+  }
+
+  loadSuratJalan();
+
+}
+
+
+function renderSuratJalan(
+  data
+){
+
+  const container =
+    $("suratJalanTable");
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-truck"></i>
+        <div class="empty-state-title">
+          Tidak ada surat jalan
+        </div>
+        <div class="empty-state-text">
+          Coba ubah kata pencarian atau filter.
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+          <th>No Surat Jalan</th>
+          <th>Tanggal</th>
+          <th>Pabrik</th>
+          <th>Kendaraan</th>
+          <th>Supir</th>
+          <th>Jenis Pengiriman</th>
+          <th>Aksi</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.noSuratJalan || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaPabrik ||
+                  item.pabrikTujuan ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kendaraan || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaSupir || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPengiriman || "-"
+                )}
+              </td>
+
+              <td>
+                <button
+                  class="btn btn-soft btn-sm"
+                  onclick="printSuratJalanFromHistory('${escapeHtml(item.idSuratJalan)}')"
+                  title="Cetak ulang">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function printSuratJalanFromHistory(
+  idSuratJalan
+){
+
+  if(!idSuratJalan){
+    showToast(
+      "ID surat jalan tidak ditemukan.",
+      "error"
+    );
+    return;
+  }
+
+  showLoading(
+    "Menyiapkan surat jalan..."
+  );
+
+  callServer(
+    "getSuratJalanById",
+    [idSuratJalan],
+
+    function(data){
+
+      hideLoading();
+
+      if(!data){
+        showToast(
+          "Surat jalan tidak ditemukan.",
+          "error"
+        );
+        return;
+      }
+
+      const header = {
+
+        noSuratJalan:
+          data.noSuratJalan || "",
+
+        tanggal:
+          data.tanggal || "",
+
+        pabrikTujuan:
+          data.namaPabrik ||
+          data.pabrikTujuan ||
+          "",
+
+        alamat:
+          data.alamatPabrik ||
+          data.alamat ||
+          "",
+
+        noPo:
+          data.noPO || "",
+
+        kendaraan:
+          data.kendaraan || "",
+
+        namaSupir:
+          data.namaSupir || "",
+
+        jenisPengiriman:
+          data.jenisPengiriman || "",
+
+        keterangan:
+          data.keterangan || ""
+
+      };
+
+      openPrintWindow(
+        buildSuratJalanPrint(
+          header,
+          data.detail || []
+        )
+      );
+
+      callServer(
+        "recordPrintActivity",
+        ["Surat Jalan", idSuratJalan],
+        function(){},
+        function(){}
+      );
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil surat jalan.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PRINT SURAT JALAN
+========================================================= */
+
+function printCurrentSuratJalan(){
+
+  const data =
+    collectSuratJalanData();
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal surat jalan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.detail.length){
+    showToast(
+      "Detail barang belum ada.",
+      "error"
+    );
+    return;
+  }
+
+
+  const header = {
+
+    noSuratJalan:
+      lastSuratJalanNumber ||
+      "",
+
+    tanggal:
+      data.tanggal,
+
+    pabrikTujuan:
+      masterPabrikData.find(
+        p =>
+          String(p.idPabrik) ===
+          String(data.idPabrik)
+      )?.namaPabrik || "",
+
+    alamat:
+      data.alamat,
+
+    noPo:
+      data.noPo,
+
+    kendaraan:
+      data.kendaraan,
+
+    namaSupir:
+      data.namaSupir,
+
+    tujuan:
+      data.tujuan,
+
+    jenisPengiriman:
+      data.jenisPengiriman,
+
+    keterangan:
+      data.keterangan
+
+  };
+
+
+  openPrintWindow(
+    buildSuratJalanPrint(
+      header,
+      data.detail
+    )
+  );
+
+}
+
+
+/* =========================================================
+   SURAT JALAN PRINT
+========================================================= */
+
+function buildSuratJalanPrint(
+  h,
+  details
+){
+
+  const totalKg =
+    details.reduce(
+      (sum,item) =>
+        sum +
+        Number(
+          item.beratKg || 0
+        ),
+      0
+    );
+
+
+  const rows =
+    details.map(
+      (item,index) => `
+
+        <tr>
+
+          <td class="center">
+            ${index+1}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.jenisKain || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.warna || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.noRoll || "-"
+            )}
+          </td>
+
+          <td class="right">
+            ${formatNumber(
+              item.beratKg || 0
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.keterangan || "-"
+            )}
+          </td>
+
+        </tr>
+
+      `
+    ).join("");
+
+
+  return `
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Surat Jalan ${escapeHtml(
+  h.noSuratJalan
+)}
+</title>
+
+<style>
+
+@page{
+  size:A5 portrait;
+  margin:8mm;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:9px;
+  color:#111;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1.5px solid #111;
+  padding-bottom:6px;
+  margin-bottom:7px;
+}
+
+.company{
+  font-size:15px;
+  font-weight:bold;
+}
+
+.company-sub{
+  font-size:8px;
+  margin-top:2px;
+}
+
+.title{
+  text-align:right;
+}
+
+.title strong{
+  display:block;
+  font-size:14px;
+}
+
+.print-date{
+  display:block;
+  font-size:8.5px;
+  line-height:1.2;
+}
+
+.info{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  margin-bottom:8px;
+}
+
+.info > tbody > tr > td{
+  width:50%;
+  padding:0;
+  vertical-align:top;
+}
+
+.info .info-half{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.info .info-half td{
+  padding:2px 0;
+  vertical-align:top;
+  line-height:1.2;
+}
+
+.info .info-half .label{
+  width:105px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.info .info-half .sep{
+  width:7px;
+}
+
+.info .right-half{
+  padding-left:18px !important;
+}
+
+.detail{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.detail th,
+.detail td{
+  border:1px solid #222;
+  padding:4px 3px;
+}
+
+.detail th{
+  background:#f3f3f3;
+  font-size:8px;
+}
+
+.center{
+  text-align:center;
+}
+
+.right{
+  text-align:right;
+}
+
+.total{
+  margin-top:7px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.total-box{
+  width:40%;
+}
+
+.total-row{
+  display:flex;
+  justify-content:space-between;
+  padding:2px 0;
+}
+
+.total-main{
+  border-top:1px solid #111;
+  padding-top:4px;
+  font-weight:bold;
+}
+
+.note{
+  margin-top:10px;
+  border-top:1px solid #222;
+  padding-top:5px;
+  font-size:8px;
+}
+
+.signature{
+
+  width:100%;
+  border-collapse:collapse;
+  margin-top:25px;
+
+}
+
+.signature td{
+
+  width:33.33%;
+  text-align:center;
+  vertical-align:top;
+
+}
+
+.space{
+
+  height:48px;
+
+}
+
+.name{
+  font-weight:bold;
+}
+
+.footer{
+  margin-top:10px;
+  text-align:center;
+  font-size:7px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+  <div>
+
+    <div class="company">
+      CV PANDS TEKSTIL
+    </div>
+
+    <div class="company-sub">
+      Dokumen Internal Pengiriman
+    </div>
+
+  </div>
+
+
+  <div class="title">
+
+    <strong>
+      SURAT JALAN
+    </strong>
+
+    <span class="print-date">
+      Dicetak pada
+    </span>
+
+    <span class="print-date">
+      ${formatDate(h.tanggal)}
+    </span>
+
+  </div>
+
+</div>
+
+
+<table class="info">
+
+<tr>
+
+<td>
+  <table class="info-half">
+    <tr>
+      <td class="label">Kepada / Pabrik</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.pabrikTujuan || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Alamat Pabrik</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.alamat || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">No PO / Pesanan</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.noPo || "-")}</td>
+    </tr>
+  </table>
+</td>
+
+<td class="right-half">
+  <table class="info-half">
+    <tr>
+      <td class="label">Kendaraan</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.kendaraan || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Nama Supir</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.namaSupir || "-")}</td>
+    </tr>
+
+    <tr>
+      <td class="label">Jenis Pengiriman</td>
+      <td class="sep">:</td>
+      <td>${escapeHtml(h.jenisPengiriman || "-")}</td>
+    </tr>
+  </table>
+</td>
+
+</tr>
+
+</table>
+
+
+<table class="detail">
+
+<thead>
+
+<tr>
+
+<th>No</th>
+<th>Jenis Kain</th>
+<th>Warna</th>
+<th>No Roll</th>
+<th>Berat Kg</th>
+<th>Keterangan</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${rows}
+
+</tbody>
+
+</table>
+
+
+<div class="total">
+
+  <div class="total-box">
+
+    <div class="total-row">
+
+      <span>
+        Total Roll
+      </span>
+
+      <strong>
+        ${details.length}
+      </strong>
+
+    </div>
+
+
+    <div class="total-row total-main">
+
+      <span>
+        Total Kg
+      </span>
+
+      <strong>
+        ${formatNumber(totalKg)} Kg
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="note">
+
+  <strong>
+    Catatan:
+  </strong>
+
+  ${escapeHtml(
+    h.keterangan ||
+    "Barang telah dikirim sesuai rincian di atas."
+  )}
+
+</div>
+
+
+<table class="signature">
+
+<tr>
+
+<td>
+
+  Dikirim Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( CV PANDS TEKSTIL )
+  </div>
+
+</td>
+
+
+<td>
+
+  Dibawa Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( ${escapeHtml(
+      h.namaSupir || "-"
+    )} )
+  </div>
+
+</td>
+
+
+<td>
+
+  Diterima Oleh
+
+  <div class="space"></div>
+
+  <div class="name">
+    ( ${escapeHtml(
+      h.pabrikTujuan || "-"
+    )} )
+  </div>
+
+</td>
+
+</tr>
+
+</table>
+
+
+<div class="footer">
+  Dokumen ini merupakan bukti pengiriman dan penerimaan barang.
+</div>
+
+
+</body>
+
+</html>
+
+  `;
+
+}
+
+
+/* =========================================================
+   HPP
+========================================================= */
+
+function resetHppForm(){
+
+  $("hppTanggal").value =
+    getTodayString();
+
+  $("hppSupplier").value =
+    "";
+
+  $("hppNamaBarang").value =
+    "";
+
+  $("hppWarna").value =
+    "";
+
+  $("hppJumlah").value =
+    "";
+
+  $("hppHarga").value =
+    "";
+
+  $("hppPajak").value =
+    "0";
+
+  $("hppJenisTransaksi").value =
+    "Pembelian";
+
+  $("hppKeterangan").value =
+    "";
+
+}
+
+
+function saveHppForm(){
+
+  const data = {
+
+    tanggal:
+      $("hppTanggal").value,
+
+    supplier:
+      $("hppSupplier")
+        .value
+        .trim(),
+
+    namaBarang:
+      $("hppNamaBarang")
+        .value
+        .trim(),
+
+    warna:
+      $("hppWarna")
+        .value
+        .trim(),
+
+    jumlah:
+      Number(
+        $("hppJumlah").value
+      ) || 0,
+
+    hargaSatuan:
+      Number(
+        $("hppHarga").value
+      ) || 0,
+
+    pajak:
+      Number(
+        $("hppPajak").value
+      ) || 0,
+
+    jenisTransaksi:
+      $("hppJenisTransaksi").value,
+
+    keterangan:
+      $("hppKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal HPP wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.namaBarang){
+    showToast(
+      "Nama barang wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.jumlah <= 0){
+    showToast(
+      "Jumlah harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.hargaSatuan <= 0){
+    showToast(
+      "Harga satuan harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan HPP..."
+  );
+
+
+  callServer(
+    "saveHpp",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan HPP.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "HPP berhasil disimpan."
+      );
+
+
+      resetHppForm();
+
+      loadHpp();
+      loadHppSummary();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadHpp(){
+
+  const container =
+    $("hppTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat HPP...
+      </div>
+    </div>
+
+  `;
+
+
+  callServer(
+    "getHpp",
+    [],
+
+    function(data){
+
+      renderHpp(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderHpp(
+  data
+){
+
+  const container =
+    $("hppTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-calculator"></i>
+
+        <div class="empty-state-title">
+          Belum ada data HPP
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>Tanggal</th>
+          <th>Supplier</th>
+          <th>Nama Barang</th>
+          <th>Warna</th>
+          <th>Jumlah</th>
+          <th>Harga Satuan</th>
+          <th>Pajak</th>
+          <th>Total</th>
+          <th>Transaksi</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.supplier || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaBarang || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.warna || "-"
+                )}
+              </td>
+
+              <td>
+                ${formatNumber(
+                  item.jumlah || 0
+                )}
+              </td>
+
+              <td>
+                ${formatRupiah(
+                  item.hargaSatuan || 0
+                )}
+              </td>
+
+              <td>
+                ${formatRupiah(
+                  item.pajak || 0
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.total || 0
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisTransaksi || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function loadHppSummary(){
+
+  const month =
+    Number(
+      $("hppMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("hppYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getHppSummary",
+    [year,month],
+
+    function(data){
+
+      const summary =
+        data || {};
+
+
+      $("hppTotalPembelian")
+        .textContent =
+        formatRupiah(
+          summary.totalPembelian || 0
+        );
+
+
+      $("hppTotalRetur")
+        .textContent =
+        formatRupiah(
+          summary.totalRetur || 0
+        );
+
+
+      $("hppBersih")
+        .textContent =
+        formatRupiah(
+          summary.hppBersih || 0
+        );
+
+
+      $("hppStatusPengeluaran")
+        .textContent =
+        summary.statusPengeluaran ||
+        "Belum";
+
+    }
+
+  );
+
+}
+
+
+function masukkanHppKePengeluaranForm(){
+
+  const month =
+    Number(
+      $("hppMonth").value
+    );
+
+
+  const year =
+    Number(
+      $("hppYear").value
+    );
+
+
+  if(
+    !confirmAction(
+      `Masukkan HPP bulan ${monthNames[month-1]} ${year} ke Pengeluaran?`
+    )
+  ){
+    return;
+  }
+
+
+  showLoading(
+    "Memasukkan HPP ke Pengeluaran..."
+  );
+
+
+  callServer(
+    "masukkanHppKePengeluaran",
+    [year,month],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal memasukkan HPP.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        `HPP ${formatRupiah(result.jumlah || 0)} berhasil dimasukkan ke Pengeluaran.`
+      );
+
+
+      loadHppSummary();
+      loadPengeluaran();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal memasukkan HPP.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PENGELUARAN
+========================================================= */
+
+function resetPengeluaranForm(){
+
+  $("pengeluaranTanggal").value =
+    getTodayString();
+
+  $("pengeluaranNama").value =
+    "";
+
+  $("pengeluaranKebutuhan").value =
+    "";
+
+  $("pengeluaranJumlah").value =
+    "";
+
+  $("pengeluaranPembayaran").value =
+    "Cash";
+
+  $("pengeluaranKategori").value =
+    "Operasional";
+
+  $("pengeluaranKeterangan").value =
+    "";
+
+}
+
+
+function savePengeluaranForm(){
+
+  const data = {
+
+    tanggal:
+      $("pengeluaranTanggal").value,
+
+    nama:
+      $("pengeluaranNama")
+        .value
+        .trim(),
+
+    kebutuhan:
+      $("pengeluaranKebutuhan")
+        .value
+        .trim(),
+
+    jumlah:
+      Number(
+        $("pengeluaranJumlah").value
+      ) || 0,
+
+    jenisPembayaran:
+      $("pengeluaranPembayaran")
+        .value,
+
+    kategori:
+      $("pengeluaranKategori")
+        .value,
+
+    keterangan:
+      $("pengeluaranKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.tanggal){
+    showToast(
+      "Tanggal wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!data.kebutuhan){
+    showToast(
+      "Kebutuhan wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(data.jumlah <= 0){
+    showToast(
+      "Jumlah harus lebih dari 0.",
+      "error"
+    );
+    return;
+  }
+
+
+  showLoading(
+    "Menyimpan pengeluaran..."
+  );
+
+
+  callServer(
+    "savePengeluaran",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan pengeluaran.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "Pengeluaran berhasil disimpan."
+      );
+
+
+      resetPengeluaranForm();
+
+      loadPengeluaran();
+      loadDashboard();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan pengeluaran.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadPengeluaran(){
+
+  const container =
+    $("pengeluaranTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  callServer(
+    "getPengeluaran",
+    [],
+
+    function(data){
+
+      renderPengeluaran(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pengeluaran.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderPengeluaran(
+  data
+){
+
+  const container =
+    $("pengeluaranTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-wallet2"></i>
+
+        <div class="empty-state-title">
+          Belum ada pengeluaran
+        </div>
+
+      </div>
+
+    `;
+
+    $("pengeluaranTotal")
+      .textContent =
+      "Rp 0";
+
+    return;
+
+  }
+
+
+  const total =
+    data.reduce(
+      (sum,item) =>
+        sum +
+        Number(
+          item.jumlah || 0
+        ),
+      0
+    );
+
+
+  $("pengeluaranTotal")
+    .textContent =
+    formatRupiah(total);
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>Tanggal</th>
+          <th>Nama</th>
+          <th>Kebutuhan</th>
+          <th>Jumlah</th>
+          <th>Pembayaran</th>
+          <th>Kategori</th>
+          <th>Keterangan</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${formatDate(item.tanggal)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.nama || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kebutuhan || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.jumlah || 0
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisPembayaran || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kategori || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   MASTER PABRIK
+========================================================= */
+
+function renderMasterPabrik(
+  data
+){
+
+  const container =
+    $("masterPabrikTable");
+
+
+  if(!container){
+    return;
+  }
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-building"></i>
+
+        <div class="empty-state-title">
+          Belum ada pabrik
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>No</th>
+          <th>Nama Pabrik</th>
+          <th>Alamat</th>
+          <th>Kontak</th>
+          <th>Keterangan</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          (item,index) => `
+
+            <tr>
+
+              <td>
+                ${index+1}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.namaPabrik || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.alamat || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.kontak || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.keterangan || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+function saveMasterPabrikForm(){
+
+  const data = {
+
+    namaPabrik:
+      $("masterPabrikNama")
+        .value
+        .trim(),
+
+    alamat:
+      $("masterPabrikAlamat")
+        .value
+        .trim(),
+
+    kontak:
+      $("masterPabrikKontak")
+        .value
+        .trim(),
+
+    keterangan:
+      $("masterPabrikKeterangan")
+        .value
+        .trim()
+
+  };
+
+
+  if(!data.namaPabrik){
+
+    showToast(
+      "Nama pabrik wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showLoading(
+    "Menyimpan pabrik..."
+  );
+
+
+  callServer(
+    "saveMasterPabrik",
+    [data],
+
+    function(result){
+
+      hideLoading();
+
+
+      if(
+        !result ||
+        result.success === false
+      ){
+
+        showToast(
+          result?.message ||
+          "Gagal menyimpan pabrik.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showToast(
+        "Pabrik berhasil disimpan."
+      );
+
+
+      $("masterPabrikNama").value =
+        "";
+
+      $("masterPabrikAlamat").value =
+        "";
+
+      $("masterPabrikKontak").value =
+        "";
+
+      $("masterPabrikKeterangan").value =
+        "";
+
+
+      loadMasterPabrik();
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal menyimpan pabrik.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   PEMBUKUAN
+========================================================= */
+
+function loadPembukuanGrey(){
+
+  const month =
+    Number(
+      $("greyMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("greyYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getPembukuanGrey",
+    [],
+
+    function(data){
+
+      renderPembukuan(
+        data,
+        "grey",
+        year,
+        month
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pembukuan Grey.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function loadPembukuanJadi(){
+
+  const month =
+    Number(
+      $("jadiMonth")?.value
+    ) || new Date().getMonth()+1;
+
+
+  const year =
+    Number(
+      $("jadiYear")?.value
+    ) || new Date().getFullYear();
+
+
+  callServer(
+    "getPembukuanKainJadi",
+    [],
+
+    function(data){
+
+      renderPembukuan(
+        data,
+        "jadi",
+        year,
+        month
+      );
+
+    },
+
+    function(error){
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil pembukuan Kain Jadi.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderPembukuan(
+  data,
+  type,
+  targetYear,
+  targetMonth
+){
+
+  let rows =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  const tableId =
+    type === "grey"
+      ? "greyTable"
+      : "jadiTable";
+
+  const container =
+    $(tableId);
+
+  if(!container){
+    return;
+  }
+
+  // Filter bulan/tahun sesuai selector.
+  rows = rows.filter(item => {
+    const date = parseClientDate(item.tanggal);
+    return date &&
+      date.getFullYear() === Number(targetYear) &&
+      date.getMonth() + 1 === Number(targetMonth);
+  });
+
+  let totalKg = 0;
+  let totalMeter = 0;
+  let totalPenjualan = 0;
+
+  rows.forEach(item => {
+    const jumlah = Number(item.jumlah ?? item.qty ?? item.jumlahKg ?? 0) || 0;
+    const satuan = String(item.satuan || "Kg").toLowerCase();
+
+    if(satuan === "meter"){
+      totalMeter += jumlah;
+    }else{
+      totalKg += jumlah;
+    }
+
+    totalPenjualan +=
+      Number(item.totalPenjualan || item.total || 0);
+  });
+
+  if(type === "grey"){
+    $("greyTotalTransaksi").textContent = formatNumber(rows.length);
+    $("greyTotalKg").textContent = formatNumber(totalKg) + " Kg";
+    // Tidak lagi memakai Total Roll sebagai ukuran pembukuan.
+    const meterEl = $("greyTotalMeter");
+    if(meterEl) meterEl.textContent = formatNumber(totalMeter) + " M";
+    $("greyTotalPenjualan").textContent = formatRupiah(totalPenjualan);
+  }else{
+    $("jadiTotalTransaksi").textContent = formatNumber(rows.length);
+    $("jadiTotalKg").textContent = formatNumber(totalKg) + " Kg";
+    const meterEl = $("jadiTotalMeter");
+    if(meterEl) meterEl.textContent = formatNumber(totalMeter) + " M";
+    $("jadiTotalPenjualan").textContent = formatRupiah(totalPenjualan);
+  }
+
+  if(!rows.length){
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-box-seam"></i>
+        <div class="empty-state-title">Belum ada data pembukuan</div>
+        <div class="empty-state-text">Tidak ada transaksi pada periode yang dipilih.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>No Invoice</th>
+          <th>Pembeli</th>
+          <th>Jumlah</th>
+          <th>Satuan</th>
+          <th>Berat Kg</th>
+          <th>Jenis Kain</th>
+          <th>Warna</th>
+          <th>Harga Satuan</th>
+          <th>Pembayaran</th>
+          <th>Total Penjualan</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(item => `
+          <tr>
+            <td>${formatDate(item.tanggal)}</td>
+            <td>${escapeHtml(item.noInvoice || "-")}</td>
+            <td>${escapeHtml(item.namaPembeli || "-")}</td>
+            <td>${formatNumber(item.jumlah ?? item.qty ?? item.jumlahKg ?? 0)}</td>
+            <td><span class="unit-badge">${escapeHtml(item.satuan || "Kg")}</span></td>
+            <td>${item.beratKg === "" || item.beratKg == null ? "-" : formatNumber(item.beratKg) + " Kg"}</td>
+            <td>${escapeHtml(item.jenisKain || "-")}</td>
+            <td>${escapeHtml(item.warna || "-")}</td>
+            <td>${formatRupiah(item.hargaSatuan ?? item.harga ?? 0)}</td>
+            <td>${escapeHtml(item.jenisPembayaran || "-")}</td>
+            <td><strong>${formatRupiah(item.totalPenjualan || item.total || 0)}</strong></td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function loadDashboard(){
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  callServer(
+    "getDashboardSummary",
+    [year, month],
+
+    function(data){
+
+      const summary =
+        data || {};
+
+
+      $("dashTotalInvoice")
+        .textContent =
+        summary.totalInvoice || 0;
+
+
+      $("dashTotalPenjualan")
+        .textContent =
+        formatRupiah(
+          summary.totalPenjualan || 0
+        );
+
+
+      $("dashTotalGrey")
+        .textContent =
+        formatRupiah(
+          summary.totalGrey || 0
+        );
+
+
+      $("dashTotalJadi")
+        .textContent =
+        formatRupiah(
+          summary.totalJadi || 0
+        );
+
+
+      $("dashHpp")
+        .textContent =
+        formatRupiah(
+          summary.hpp ||
+          summary.hppBersih ||
+          0
+        );
+
+
+      $("dashPengeluaran")
+        .textContent =
+        formatRupiah(
+          summary.pengeluaran || 0
+        );
+
+
+      $("dashSuratJalan")
+        .textContent =
+        summary.totalSuratJalan ||
+        summary.suratJalan ||
+        0;
+
+
+      $("dashPenjualanBersih")
+        .textContent =
+        formatRupiah(
+          summary.penjualanBersih ||
+          summary.totalPenjualan ||
+          0
+        );
+
+
+      loadDashboardInvoices();
+
+    },
+
+    function(){
+
+      loadDashboardInvoices();
+
+    }
+
+  );
+
+}
+
+
+function loadDashboardInvoices(){
+
+  callServer(
+    "getInvoices",
+    [],
+
+    function(data){
+
+      const invoices =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      const latest =
+        invoices
+          .slice()
+          .reverse()
+          .slice(0,8);
+
+
+      renderDashboardInvoices(
+        latest
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderDashboardInvoices(
+  data
+){
+
+  const container =
+    $("dashboardInvoiceTable");
+
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="bi bi-receipt"></i>
+
+        <div class="empty-state-title">
+          Belum ada invoice
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+
+          <th>No Invoice</th>
+          <th>Tanggal</th>
+          <th>Pembeli</th>
+          <th>Jenis</th>
+          <th>Total</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.noInvoice || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${formatDate(
+                  item.tanggal
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.namaPembeli || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.jenisKain || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${formatRupiah(
+                    item.totalInvoice || 0
+                  )}
+                </strong>
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PRINT WINDOW
+========================================================= */
+
+function openPrintWindow(
+  html
+){
+
+  const printWindow =
+    window.open(
+      "",
+      "_blank",
+      "width=900,height=700"
+    );
+
+
+  if(!printWindow){
+
+    showToast(
+      "Popup diblokir browser. Izinkan popup untuk aplikasi ini.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  printWindow.document.open();
+
+  printWindow.document.write(
+    html
+  );
+
+  printWindow.document.close();
+
+
+  printWindow.onload =
+    function(){
+
+      setTimeout(
+        function(){
+
+          printWindow.focus();
+
+          printWindow.print();
+
+        },
+        300
+      );
+
+    };
+
+}
+
+
+/* =========================================================
+   BACKUP DATABASE
+========================================================= */
+
+function backupDatabaseForm(){
+
+  if(!confirmAction("Buat backup database sekarang?")){
+    return;
+  }
+
+  showLoading(
+    "Membuat backup database..."
+  );
+
+  callServer(
+    "backupDatabase",
+    [],
+
+    function(result){
+
+      hideLoading();
+
+      if(!result || result.success === false){
+
+        showToast(
+          result?.message ||
+          "Gagal membuat backup.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      showToast(
+        `Backup berhasil dibuat: ${result.fileName || ""}`
+      );
+
+      if(result.fileUrl){
+        window.open(
+          result.fileUrl,
+          "_blank"
+        );
+      }
+
+    },
+
+    function(error){
+
+      hideLoading();
+
+      showToast(
+        error?.message ||
+        "Gagal membuat backup database.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   LOG AKTIVITAS
+========================================================= */
+
+function loadActivityLog(){
+
+  const container =
+    $("activityLogTable");
+
+  if(!container){
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="loading-spinner"></div>
+      <div class="empty-state-title">
+        Memuat log aktivitas...
+      </div>
+    </div>
+  `;
+
+  callServer(
+    "getActivityLog",
+    [],
+
+    function(data){
+
+      renderActivityLog(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    },
+
+    function(error){
+
+      container.innerHTML =
+        `<div class="empty-state">
+          <div class="empty-state-title">
+            Gagal mengambil log aktivitas
+          </div>
+        </div>`;
+
+      showToast(
+        error?.message ||
+        "Gagal mengambil log aktivitas.",
+        "error"
+      );
+
+    }
+
+  );
+
+}
+
+
+function renderActivityLog(
+  data
+){
+
+  const container =
+    $("activityLogTable");
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-clock-history"></i>
+        <div class="empty-state-title">
+          Belum ada aktivitas
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = `
+
+    <table class="table-custom">
+
+      <thead>
+
+        <tr>
+          <th>Tanggal & Waktu</th>
+          <th>User</th>
+          <th>Aktivitas</th>
+          <th>Modul</th>
+          <th>ID Data</th>
+          <th>Keterangan</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${data.map(
+          item => `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  item.tanggalWaktu || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.user || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.aktivitas || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.modul || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    item.idData || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  item.keterangan || "-"
+                )}
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+function initApp(){
+  checkExistingLogin();
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  initApp
+);
+
+</script>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>
