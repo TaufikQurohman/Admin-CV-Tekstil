@@ -3,51 +3,79 @@
 ========================= -->
 <div id="loginScreen">
 
-  <!-- Left: Brand Identity Panel -->
-  <div class="login-left-panel">
-    <div class="login-left-content">
-      <div class="login-brand-logo">PT</div>
-      <div class="login-company-name">CV PANDS TEKSTIL</div>
-      <div class="login-left-divider"></div>
-      <div class="login-company-tagline">Sistem Administrasi</div>
-      <div class="login-left-desc">Aplikasi administrasi terpadu untuk manajemen produksi, penjualan, dan operasional perusahaan tekstil.</div>
-    </div>
-  </div>
-
-  <!-- Right: Login Form Panel -->
+  <!-- Only right panel remains (full width centered) -->
   <div class="login-right-panel">
     <div class="login-card">
 
-      <div class="login-brand">
-        <div class="login-title">Masuk ke Sistem</div>
-        <div class="login-subtitle">Administrator CV Pands Tekstil</div>
+      <!-- Card Header: Brand Identity -->
+      <div class="login-card-header">
+        <div class="login-logo-wrap">
+          <div class="login-brand-logo">PT</div>
+          <div class="login-company-name">CV PANDS TEKSTIL</div>
+          <div class="login-company-tagline">Sistem Administrasi</div>
+        </div>
       </div>
 
-      <div id="loginError" class="login-error"></div>
+      <!-- Card Body: Login Form -->
+      <div class="login-card-body">
 
-      <form onsubmit="event.preventDefault(); doLogin();">
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-control" id="loginUsername" autocomplete="username"
-            placeholder="Masukkan username" required>
+        <div class="login-brand">
+          <div class="login-title">Selamat Datang</div>
+          <div class="login-subtitle">Masuk ke sistem untuk melanjutkan</div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="loginPassword" autocomplete="current-password"
-            placeholder="Masukkan password" required>
+        <div id="loginError" class="login-error">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="loginErrorMsg"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary login-btn" id="loginButton">
-          <i class="bi bi-box-arrow-in-right me-1"></i>
-          Login
-        </button>
-      </form>
+        <form onsubmit="event.preventDefault(); doLogin();">
 
+          <div class="mb-4">
+            <label class="login-form-label">
+              <i class="bi bi-person"></i>
+              Username
+            </label>
+            <div class="login-input-wrap">
+              <i class="bi bi-person input-icon"></i>
+              <input type="text" class="form-control" id="loginUsername" autocomplete="username"
+                placeholder="Masukkan username" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="login-form-label">
+              <i class="bi bi-lock"></i>
+              Password
+            </label>
+            <div class="login-input-wrap">
+              <i class="bi bi-lock input-icon"></i>
+              <input type="password" class="form-control" id="loginPassword" autocomplete="current-password"
+                placeholder="Masukkan password" required>
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="Tampilkan password">
+                <i class="bi bi-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary login-btn" id="loginButton">
+            <i class="bi bi-box-arrow-in-right me-2"></i>
+            Masuk ke Sistem
+          </button>
+
+        </form>
+
+        <div class="login-footer-note">
+          <i class="bi bi-shield-lock-fill"></i>
+          Akses terbatas untuk administrator
+        </div>
+
+      </div>
     </div>
   </div>
 
 </div>
+
 
 
 <!-- =========================
@@ -360,11 +388,13 @@
 
         <div class="col-lg-4">
 
-          <div class="card-custom">
+          <!-- Ringkasan Keuangan -->
+          <div class="card-custom mb-3">
 
             <div class="card-header-custom">
 
               <h3 class="card-header-title">
+                <i class="bi bi-bar-chart-line me-1" style="color:var(--color-cta)"></i>
                 Ringkasan
               </h3>
 
@@ -428,11 +458,68 @@
 
           </div>
 
+          <!-- Cash Flow Panel -->
+          <div class="card-custom">
+
+            <div class="card-header-custom">
+              <h3 class="card-header-title">
+                <i class="bi bi-arrow-left-right me-1" style="color:var(--color-success)"></i>
+                Arus Kas Bulan Ini
+              </h3>
+            </div>
+
+            <div class="card-body-custom">
+
+              <div class="cashflow-grid">
+
+                <div class="cashflow-item income">
+                  <div class="cashflow-item-label">
+                    <i class="bi bi-arrow-down-circle-fill"></i>
+                    Masuk
+                  </div>
+                  <div class="cashflow-item-value" id="dashCashIn">Rp 0</div>
+                  <div class="cashflow-item-sub">dari penjualan</div>
+                </div>
+
+                <div class="cashflow-item expense">
+                  <div class="cashflow-item-label">
+                    <i class="bi bi-arrow-up-circle-fill"></i>
+                    Keluar
+                  </div>
+                  <div class="cashflow-item-value" id="dashCashOut">Rp 0</div>
+                  <div class="cashflow-item-sub">HPP + pengeluaran</div>
+                </div>
+
+              </div>
+
+              <div class="cashflow-net">
+                <div class="cashflow-net-label">Arus Kas Bersih</div>
+                <div class="cashflow-net-value" id="dashNetCash">Rp 0</div>
+              </div>
+
+              <div class="cashflow-bar-wrap">
+                <div class="cashflow-bar-label">
+                  <span>Pemasukan</span>
+                  <span>Pengeluaran</span>
+                </div>
+                <div class="cashflow-bar-track">
+                  <div class="cashflow-bar-fill income-bar" id="dashCashInBar" style="width:0%"></div>
+                </div>
+                <div class="cashflow-bar-track">
+                  <div class="cashflow-bar-fill expense-bar" id="dashCashOutBar" style="width:0%"></div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
     </section>
+
 
 
     <!-- =====================================================

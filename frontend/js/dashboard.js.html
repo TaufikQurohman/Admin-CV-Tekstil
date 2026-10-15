@@ -72,6 +72,15 @@
         );
 
 
+      /* === CASHFLOW === */
+      const cashIn  = summary.totalPenjualan || 0;
+      const cashOut =
+        (summary.hpp || summary.hppBersih || 0) +
+        (summary.pengeluaran || 0);
+
+      renderCashflow(cashIn, cashOut);
+
+
       loadDashboardInvoices();
 
     },
@@ -83,6 +92,42 @@
     }
 
   );
+
+}
+
+
+/* ---------------------------------------------------
+   renderCashflow
+--------------------------------------------------- */
+function renderCashflow(cashIn, cashOut){
+
+  const netCash = cashIn - cashOut;
+
+  if($("dashCashIn")){
+    $("dashCashIn").textContent = formatRupiah(cashIn);
+  }
+
+  if($("dashCashOut")){
+    $("dashCashOut").textContent = formatRupiah(cashOut);
+  }
+
+  if($("dashNetCash")){
+    $("dashNetCash").textContent = formatRupiah(Math.abs(netCash));
+    $("dashNetCash").className =
+      "cashflow-net-value " + (netCash >= 0 ? "positive" : "negative");
+  }
+
+  const maxVal = Math.max(cashIn, cashOut, 1);
+
+  if($("dashCashInBar")){
+    const pct = Math.min(100, Math.round((cashIn / maxVal) * 100));
+    $("dashCashInBar").style.width = pct + "%";
+  }
+
+  if($("dashCashOutBar")){
+    const pct = Math.min(100, Math.round((cashOut / maxVal) * 100));
+    $("dashCashOutBar").style.width = pct + "%";
+  }
 
 }
 

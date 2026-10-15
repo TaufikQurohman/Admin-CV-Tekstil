@@ -1,4 +1,4 @@
-﻿let authToken = sessionStorage.getItem("pands_auth_token") || "";
+let authToken = sessionStorage.getItem("pands_auth_token") || "";
 let authUsername = sessionStorage.getItem("pands_auth_username") || "";
 
 function setLoginState(token, username){
@@ -20,10 +20,9 @@ function showLoginScreen(message=""){
 
   if(message){
     const box = $("loginError");
-    if(box){
-      box.textContent = message;
-      box.classList.add("show");
-    }
+    const msg = $("loginErrorMsg");
+    if(msg) msg.textContent = message;
+    if(box) box.classList.add("show");
   }
 }
 
@@ -32,10 +31,9 @@ function hideLoginScreen(){
   if(screen) screen.style.display = "none";
 
   const box = $("loginError");
-  if(box){
-    box.textContent = "";
-    box.classList.remove("show");
-  }
+  const msg = $("loginErrorMsg");
+  if(msg) msg.textContent = "";
+  if(box) box.classList.remove("show");
 
   if($("loggedInUser")){
     $("loggedInUser").textContent = authUsername || "admin";
@@ -49,7 +47,8 @@ function doLogin(){
   const errorBox = $("loginError");
 
   if(errorBox){
-    errorBox.textContent = "";
+    const msg = $("loginErrorMsg");
+    if(msg) msg.textContent = "";
     errorBox.classList.remove("show");
   }
 
@@ -67,7 +66,7 @@ function doLogin(){
     .withSuccessHandler(function(result){
       if(button){
         button.disabled = false;
-        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i> Masuk ke Sistem';
       }
 
       if(!result || !result.success || !result.token){
@@ -82,7 +81,7 @@ function doLogin(){
     .withFailureHandler(function(error){
       if(button){
         button.disabled = false;
-        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Login';
+        button.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i> Masuk ke Sistem';
       }
 
       showLoginScreen(error?.message || "Username atau password salah.");
@@ -171,4 +170,17 @@ function initAuthenticatedApp(){
 /* =========================================================
    BASIC HELPERS
 ========================================================= */
+
+function togglePasswordVisibility(){
+  const input = $("loginPassword");
+  const icon = $("eyeIcon");
+  if(!input) return;
+  if(input.type === "password"){
+    input.type = "text";
+    if(icon){ icon.classList.remove("bi-eye"); icon.classList.add("bi-eye-slash"); }
+  } else {
+    input.type = "password";
+    if(icon){ icon.classList.remove("bi-eye-slash"); icon.classList.add("bi-eye"); }
+  }
+}
 
